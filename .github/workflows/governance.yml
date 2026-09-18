@@ -37,16 +37,12 @@ jobs:
             exit 0
           fi
 
-          # Existing push: validate exactly the range introduced by the push.
           if [[ -n "$EVENT_BEFORE" && ! "$EVENT_BEFORE" =~ ^0+$ ]] &&
              git cat-file -e "$EVENT_BEFORE^{commit}" 2>/dev/null; then
             git diff --check "$EVENT_BEFORE" HEAD
             exit 0
           fi
 
-          # First push of a new branch: GitHub reports an all-zero "before".
-          # Compare the complete branch delta against the merge-base with the
-          # repository default branch, not merely HEAD^..HEAD.
           git fetch --no-tags origin "$DEFAULT_BRANCH"
           if git show-ref --verify --quiet "refs/remotes/origin/$DEFAULT_BRANCH"; then
             BASE_SHA="$(git merge-base "origin/$DEFAULT_BRANCH" HEAD)"
@@ -54,6 +50,70 @@ jobs:
             exit 0
           fi
 
-          # Truly parentless repository fallback: validate the complete tree.
           EMPTY_TREE="$(git hash-object -t tree /dev/null)"
           git diff --check "$EMPTY_TREE" HEAD
+
+  core-tests:
+    needs: foundation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Run pure core tests
+        run: dotnet run --project tests/MajoServerModpack.Core.Tests/MajoServerModpack.Core.Tests.csproj -c Release
+
+  runtime-build:
+    needs: core-tests
+    runs-on: ubuntu-latest
+    env:
+      VALHEIM_DIR: ${{ runner.temp }}/valheim-server
+      STEAMCMD_DIR: ${{ runner.temp }}/steamcmd
+      BEPINEX_ROOT: ${{ runner.temp }}/bepinex
+      BEPINEX_SHA256: e538560be65739f562519ab518a75f9c65b3f57f87457403ae7cde683c12dab7
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Install SteamCMD prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lib32gcc-s1 lib32stdc++6 unzip
+
+      - name: Install SteamCMD
+        run: |
+          set -euo pipefail
+          mkdir -p "$STEAMCMD_DIR"
+          curl -fsSL https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz             | tar -xz -C "$STEAMCMD_DIR"
+
+      - name: Install Valheim Dedicated Server build input
+        run: |
+          set -euo pipefail
+          mkdir -p "$VALHEIM_DIR"
+          "$STEAMCMD_DIR/steamcmd.sh"             +force_install_dir "$VALHEIM_DIR"             +login anonymous             +app_update 896660 validate             +quit
+          test -d "$VALHEIM_DIR/valheim_server_Data/Managed"
+
+      - name: Install pinned BepInEx build input
+        run: |
+          set -euo pipefail
+          mkdir -p "$BEPINEX_ROOT"
+          curl -fsSL             -o "$RUNNER_TEMP/bepinex.zip"             https://github.com/BepInEx/BepInEx/releases/download/v5.4.23.5/BepInEx_linux_x64_5.4.23.5.zip
+          echo "$BEPINEX_SHA256  $RUNNER_TEMP/bepinex.zip" | sha256sum -c -
+          unzip -q "$RUNNER_TEMP/bepinex.zip" -d "$BEPINEX_ROOT"
+          test -f "$BEPINEX_ROOT/BepInEx/core/BepInEx.dll"
+
+      - name: Build Majo runtime
+        run: |
+          set -euo pipefail
+          dotnet build src/MajoServerModpack/MajoServerModpack.csproj             -c Release             -p:ExecutePrebuild=true             -p:VALHEIM_INSTALL="$VALHEIM_DIR"             -p:BEPINEX_PATH="$BEPINEX_ROOT/BepInEx"             -p:VALHEIM_MANAGED="$VALHEIM_DIR/valheim_server_Data/Managed"
+
+      - name: Validate Majo artifact
+        run: |
+          set -euo pipefail
+          OUT="src/MajoServerModpack/bin/Release/net462"
+          test -f "$OUT/MajoServerModpack.dll"
+          rm -rf artifacts
+          mkdir -p artifacts
+          cp "$OUT/MajoServerModpack.dll" artifacts/
+          test "$(find artifacts -maxdepth 1 -type f -name '*.dll' | wc -l)" -eq 1
+          test "$(basename "$(find artifacts -maxdepth 1 -type f -name '*.dll')")" = "MajoServerModpack.dll"
