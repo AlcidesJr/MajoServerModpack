@@ -10,7 +10,7 @@ Governança, arquitetura, referências, conflitos e contratos.
 
 ### MAJO-001 — Core runtime
 
-Bootstrap BepInEx/Jötunn, `Majo.Platform`, lifecycle, module registry, logging, diagnostics básicos e patch registry vazio.
+Bootstrap BepInEx/Jötunn, `Majo.Platform`, lifecycle, module registry, logging, diagnostics básicos, `InputRegistry` e patch registry vazio.
 
 ### MAJO-002 — Authority and secure networking
 

@@ -21,7 +21,7 @@ O projeto pretende consolidar, reimplementar e evoluir funcionalidades inspirada
 - registrar versionamento;
 - registrar análise obrigatória de conflitos;
 - criar Board e próximos marcos;
-- estabelecer princípios de autoridade, segurança, patch ownership e performance.
+- estabelecer princípios de autoridade, segurança, patch ownership, input ownership, compatibilidade e performance.
 
 ## Fora de escopo
 
@@ -39,6 +39,7 @@ O projeto pretende consolidar, reimplementar e evoluir funcionalidades inspirada
 - [x] Conflitos funcionais/técnicos formalizados.
 - [x] Autoridade e princípio de segurança RPC registrados.
 - [x] Board inicial criado.
+- [x] Compatibilidade por lado/capability e ownership de input documentados.
 - [x] Catálogo funcional das referências revisado em profundidade e vinculado à matriz de conflitos.
 - [ ] Review independente concluído.
 - [ ] Security review da fundação concluído.

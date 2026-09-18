@@ -60,6 +60,17 @@ Ação:
 - teste multiplayer;
 - fallback/rollback.
 
+## 7. Conflito de input/UI
+
+Features disputam a mesma tecla, botão de gamepad, foco, cursor ou camada de UI.
+
+Ação:
+- registrar hotkeys no `InputRegistry`;
+- detectar bindings duplicados por contexto;
+- preservar distinção entre Left/Right modifiers quando suportado;
+- não sequestrar input enquanto outro painel possui foco;
+- mostrar conflito no Control Panel em vez de sobrescrever silenciosamente.
+
 ## Níveis de resposta
 
 - `BLOCK`: combinação inválida ou perigosa;

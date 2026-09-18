@@ -161,6 +161,13 @@ Exemplos:
 3. Distância detalhada de objetos 3D deve ser limitada/configurável; alvo inicial a estudar: faixa curta próxima ao observador, com LOD/occlusion para o restante.
 4. HTTP/WebSocket nunca deve manipular Unity mutable state diretamente fora da main thread.
 
+### Input/UI
+
+1. Hotkeys de todos os módulos devem passar por um registro central.
+2. Conflito de tecla/gamepad deve ser detectável no painel.
+3. Abrir UI não pode bloquear movimento/teclado fora do necessário nem deixar câmera capturando mouse indevidamente.
+4. Contextos distintos podem reutilizar binding somente quando a coexistência for segura.
+
 ### Administration
 
 1. Toda ação privilegiada é request ao servidor.

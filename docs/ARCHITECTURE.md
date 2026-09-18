@@ -25,6 +25,7 @@ Valheim
     ├── Majo.Core
     │   ├── ModuleRegistry
     │   ├── ConfigRegistry
+    │   ├── InputRegistry
     │   ├── PatchCoordinator
     │   ├── SecureRpcGateway
     │   ├── Authority
@@ -84,7 +85,8 @@ Contém mecanismos comuns. Módulos não devem recriar:
 - persistência base;
 - scheduler;
 - diagnostics;
-- compatibility handshake.
+- compatibility handshake;
+- input/hotkey ownership e detecção de colisões.
 
 ## Autoridade
 
@@ -95,6 +97,31 @@ Categorias mínimas:
 - `ServerPolicy`: servidor define se preferência normalmente local pode ser permitida, limitada ou forçada.
 
 Single-player/host usa o mesmo pipeline, acumulando papéis de cliente, servidor e admin.
+
+## Lado de execução e compatibilidade
+
+Cada módulo/feature deve declarar onde executa:
+
+- `ClientOnly`;
+- `ServerOnly`;
+- `ClientAndServer`;
+- `OptionalClient` quando houver degradação segura.
+
+Features que alteram gameplay compartilhado não podem assumir que um cliente ausente continuará semanticamente compatível. A política concreta de handshake pertence à MAJO-002 e será baseada em `ProtocolVersion`/capabilities, não apenas na string pública da versão.
+
+## Input
+
+Hotkeys são preferência local, mas seu ownership é centralizado em `InputRegistry`.
+
+Cada ação registra:
+
+- action id;
+- contexto (gameplay, map, panel etc.);
+- binding default/atual;
+- keyboard/gamepad;
+- conflitos conhecidos/reservados.
+
+Colisões devem gerar aviso e nunca ser sobrescritas silenciosamente.
 
 ## Networking e segurança
 
