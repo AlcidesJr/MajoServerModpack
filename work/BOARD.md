@@ -2,7 +2,7 @@
 
 | TASK | Título | Estado | Dependências | Issue | PR | BLOCKED_BY | DEFERRED_GATE |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| MAJO-000 | Foundation, governance and architecture | READY_TO_MERGE | none | #1 | #2 | none | none |
+| MAJO-000 | Foundation, governance and architecture | CLOSEOUT | none | #1 | #2 | none | none |
 | MAJO-001 | Core runtime | PLANNED | MAJO-000 | pending | pending | none | none |
 | MAJO-002 | Authority and secure networking | PLANNED | MAJO-001 | pending | pending | none | none |
 | MAJO-003 | Configuration platform | PLANNED | MAJO-001, MAJO-002 | pending | pending | none | none |
