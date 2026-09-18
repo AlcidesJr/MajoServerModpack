@@ -38,3 +38,17 @@ P0/P1 aberto bloqueia merge.
 ## Evidência
 
 Não declarar PASS sem comando/run/commit verificável. Gates herdados podem ser `DEFERRED_GATE` somente quando comprovadamente externos ao diff.
+
+
+## HEAD auditável sem autorreferência
+
+Um commit Git não pode conter o próprio SHA dentro de um arquivo versionado, porque alterar o arquivo altera o SHA do commit.
+
+Para evitar uma cadeia infinita de commits de sincronização:
+
+- `CONTENT_HEAD`: último commit substantivo que altera produto/arquitetura/documentação de conteúdo;
+- commits posteriores que alterem somente `STATUS.md`, `EVIDENCE.md`, `REVIEW.md` ou `BOARD.md` são `metadata-only`;
+- o HEAD exato submetido ao review é registrado na timeline do PR/review, que não altera o Git tree;
+- antes de merge, confirmar que qualquer commit posterior ao `CONTENT_HEAD` é realmente metadata-only; caso contrário, definir novo `CONTENT_HEAD` e repetir gates afetados.
+
+Não declarar que um SHA é “HEAD atual” quando ele é apenas o último conteúdo revisado; nomear o campo de acordo com sua semântica.

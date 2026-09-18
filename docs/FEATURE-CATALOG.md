@@ -114,17 +114,30 @@ Exemplos:
 | virtuaCode EquipWheel | radial item equip/use UI | Equipment/UI | Local | inventory/hotkeys |
 | virtuaCode EquipWheel | shield auto-equip/filtering/multiple wheels | Equipment/UI | Local/ServerPolicy | overlaps V+ shield behavior |
 | virtuaCode TrashItems | destroy items via UI/hotkey | Inventory/UI | Local action | irreversible; confirmation |
-| Advize Armoire | equipment/wardrobe concept | Equipment/UI | TBD | inspect when tasked |
+| Advize Armoire | cosmetic appearance overrides / wardrobe | Equipment/Appearance/UI | ClientPreference + ServerPolicy | player customData, remote visual sync, version compatibility |
+| Advize Armoire | appearance unlock tracking and UI | Equipment/Appearance | Local | discovery state/UI lifecycle |
 | Advize CartographySkill | cartography skill/progression | Skills/Map | ServerAuthority | TheGreatestMap |
 | Advize ColorfulVines | cosmetic vine customization | Building/Visual | Local/ServerPolicy | prefab/material |
 | Advize PlantEasily | planting QoL | Farming | ServerAuthority/Policy | placement/balance |
 | Advize PlantEverything | expanded planting | Farming/World | ServerAuthority | prefab/world rules |
 | Advize Spyglass | zoom/spyglass | PlayerQoL | Local | camera/input |
 | Advize StumpsRegrow | stump/tree regrowth | World | ServerAuthority | world persistence |
-| GearAndStorage | gear/storage behavior reference only | Equipment/Storage | TBD | public repo has no implementation |
+| GearAndStorage | equipment/utility/quick slots and inventory dimensions | Inventory/Equipment | ServerAuthority | topology, save/tombstone, ExtraSlots overlap |
+| GearAndStorage | stack size, item weight, carry capacity | Inventory/Gameplay | ServerAuthority | save compatibility, oversized stacks |
+| GearAndStorage | quick stack and craft/build from nearby chests | Storage/Crafting/Building | ServerAuthority | atomic transfer, wards, inventory revisions |
+| GearAndStorage | furnace feed and production output storage | Storage/Stations | ServerAuthority | ownership, loaded-area semantics, output fallback |
+| GearAndStorage | connected workbench/build areas | Building | ServerAuthority | workbench/no-spawn/range interactions |
+| GearAndStorage | portal restrictions/unlocks by world progression | Portals/World | ServerAuthority | world persistence, item restriction display |
+| GearAndStorage | JSON quest definitions and character progress | Quests/Persistence | ServerAuthority + Local preference | untrusted files, reward atomicity, cross-world character data |
+| GearAndStorage | keys, panels and UI positions | UI/Input | Local | InputRegistry conflicts |
 | Jötunn | framework services, not feature source | Platform | N/A | framework boundary |
 
 ## Requisitos transversais extraídos das referências
+
+### Referências com persistência de jogador
+
+1. Armoire demonstra que customização visual aparentemente local pode introduzir dados em `PlayerProfile.m_customData` e requisito de versão entre peers; no Majo, aparência, persistência e visibilidade remota devem ser contratos separados.
+2. GearAndStorage demonstra que alterar slots, stacks e peso exige plano de saída/downgrade; itens nunca podem depender de um formato privado sem recovery explícito.
 
 ### Inventory
 

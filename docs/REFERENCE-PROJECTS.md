@@ -11,7 +11,7 @@ Antes de implementar uma função inspirada neles, registrar comportamento desej
 | fire-VA/FiresGhettoNetworking | networking, ZDO, queues, simulation |
 | shudnal/ExtraSlots | slots, inventário, recovery, sync policy |
 | morda0511/WorkbenchesPlus | crafting UI, sort/filter, dismantle |
-| AdvizeGH/Advize_ValheimMods | funções selecionadas a catalogar |
+| AdvizeGH/Advize_ValheimMods | Armoire, cartography, planting, cosmetics e player QoL |
 | sirskunkalot/PlanBuild | planning, blueprints, build workflows |
 | blaxxun-boop/PassivePowers | powers passivos |
 | Turbero/valheim-DetailedLevels | skills/HUD/progresso |
@@ -19,7 +19,7 @@ Antes de implementar uma função inspirada neles, registrar comportamento desej
 | ontrigger/ValheimPerformanceOptimizations | otimizações de rendering/logic/hot paths |
 | gbahns/ValheimMods | storage, map, portal, pause, diagnostics |
 | f00d4tehg0dz/valheim-webmap | mapa web 2D/3D, renderer e world sweep |
-| TayrusCz/GearAndStorage | comportamento/UX de gear e storage |
+| TayrusCz/GearAndStorage | comportamento de inventory/equipment/storage/production/portal/quests; GitHub público é support hub, detalhes funcionais vêm da documentação publicada |
 | hldblc/ValheimAdminPanel | painel administrativo, segurança e UX |
 
 ## Regra de independência
