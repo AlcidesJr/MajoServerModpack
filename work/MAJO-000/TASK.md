@@ -43,7 +43,7 @@ O projeto pretende consolidar, reimplementar e evoluir funcionalidades inspirada
 - [x] Catálogo funcional das referências revisado em profundidade e vinculado à matriz de conflitos.
 - [x] Review independente concluído — PASS no tip `fba306a016ee53b7bded77e58b0cd21baa006b93`.
 - [x] Security review da fundação concluído — PASS após revalidação formal em `SECURITY_REVIEW`.
-- [ ] PR integrado e closeout registrado — implementação integrada em `f447bc28687e0635f999996465ed17aea595ae76`; closeout em andamento.
+- [x] PR integrado e closeout registrado — implementação integrada em `f447bc28687e0635f999996465ed17aea595ae76`; closeout PR #3 preparado.
 
 ## Dependências
 

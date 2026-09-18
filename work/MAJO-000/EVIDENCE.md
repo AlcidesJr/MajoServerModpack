@@ -43,7 +43,11 @@
 ## Closeout
 
 - Branch: `task/MAJO-000-closeout`
-- Closeout PR: pending
-- STATUS final: pending
-- BOARD final: pending
-- Issue #1: permanece aberta até o merge do closeout.
+- Closeout PR: #3
+- STATUS final proposto: DONE
+- BOARD final proposto: DONE
+- BLOCKED_BY: none
+- DEFERRED_GATE: none
+- Issue #1: será encerrada pelo merge do PR #3.
+
+Após o merge do PR #3, `main` passa a conter o fechamento canônico da MAJO-000 em DONE.

@@ -1,23 +1,40 @@
 # STATUS — MAJO-000
 
 TASK: MAJO-000
-STATE: CLOSEOUT
+STATE: DONE
 BRANCH: task/MAJO-000-closeout
 IMPLEMENTATION_PR: #2
 IMPLEMENTATION_MERGE_SHA: f447bc28687e0635f999996465ed17aea595ae76
-CLOSEOUT_PR: pending
+CLOSEOUT_PR: #3
 BLOCKED_BY: none
 DEFERRED_GATE: none
 SECURITY: PASS
 
-## Resultado da implementação
+## Resultado final
 
-A fundação arquitetural e de governança foi integrada em `main` pelo PR #2.
+Fundação arquitetural e de governança concluída.
 
-## Próximo gate
+Foram formalizados:
 
-Abrir e integrar o PR de closeout com STATUS/EVIDENCE/BOARD finais e encerrar a issue #1 somente após esse merge.
+- BepInEx + Jötunn como frameworks de plataforma;
+- independência de mods funcionais de terceiros;
+- Majo.Platform / Majo.Core / Majo.Modules;
+- versionamento MAJOR.MINOR.PATCH iniciado em 0.0.0;
+- authority model;
+- SecureRpcGateway como futura trust boundary;
+- patch ownership;
+- InputRegistry;
+- catálogo de referências e conflitos;
+- security baseline;
+- governança reproduzível via GitHub Actions.
+
+## Integração
+
+- Implementation PR #2: MERGED
+- Implementation merge SHA: `f447bc28687e0635f999996465ed17aea595ae76`
+- Closeout PR #3: este PR
+- Issue #1: será encerrada automaticamente quando o PR #3 for integrado.
 
 ## Última atualização
 
-2026-09-18 — implementação MAJO-000 integrada; closeout documental iniciado.
+2026-09-18 — closeout final preparado. Após o merge do PR #3, este estado DONE passa a ser canônico em `main`.
