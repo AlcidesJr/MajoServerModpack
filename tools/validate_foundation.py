@@ -93,6 +93,16 @@ for token in ("0.0.0", "0.0.1", "0.1.0", "1.0.0", "MAJOR.MINOR.PATCH"):
     if token not in versioning:
         errors.append(f"versioning token missing: {token}")
 
+for line in patch_ownership.splitlines():
+    if not line.startswith("| ") or line.startswith("| ---"):
+        continue
+    cells = [cell.strip() for cell in line.strip("|").split("|")]
+    if len(cells) != 4 or cells[0] == "Superfície Valheim":
+        continue
+    owner = cells[1]
+    if " + " in owner or " / " in owner:
+        errors.append(f"ambiguous patch owner: {cells[0]} -> {owner}")
+
 state_match = re.search(r"^STATE:\s*(\S+)", status, re.MULTILINE)
 if not state_match or state_match.group(1) not in ALLOWED_STATES:
     errors.append("MAJO-000 STATUS has invalid/missing STATE")
