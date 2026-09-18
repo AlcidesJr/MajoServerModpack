@@ -41,8 +41,8 @@ O projeto pretende consolidar, reimplementar e evoluir funcionalidades inspirada
 - [x] Board inicial criado.
 - [x] Compatibilidade por lado/capability e ownership de input documentados.
 - [x] Catálogo funcional das referências revisado em profundidade e vinculado à matriz de conflitos.
-- [ ] Review independente concluído.
-- [x] Security review da fundação concluído — PASS; hardening registrado em `docs/SECURITY-BASELINE.md`.
+- [x] Review independente concluído — PASS no tip `fba306a016ee53b7bded77e58b0cd21baa006b93`.
+- [ ] Security review da fundação concluído — revalidação formal em `SECURITY_REVIEW`.
 - [ ] PR integrado e closeout registrado.
 
 ## Dependências
