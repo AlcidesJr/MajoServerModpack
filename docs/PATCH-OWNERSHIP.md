@@ -18,9 +18,11 @@ Antes de criar um Harmony patch:
 
 Ainda não há patches implementados. A tabela registra **domínios candidatos**, não classes finais.
 
+Cada linha possui **um único owner**. Módulos adicionais aparecem somente como consumidores.
+
 | Superfície Valheim | Owner Majo planejado | Consumidores | Referências que indicam conflito |
 | --- | --- | --- | --- |
-| ZRoutedRpc receive/routing | Core.SecureRpc / Network | Admin, Config, Network | AdminPanel, FGN, Jötunn transport |
+| ZRoutedRpc receive/routing | Core.SecureRpcGateway | Administration, Config, Network | AdminPanel, FGN, Jötunn transport |
 | ZDO send/streaming | Network.ZdoTransport | Network, WebMap diagnostics | FGN, VPO |
 | ZDO ownership/handoff | Network.Ownership | Creatures, Ships, Performance | FGN, VPO |
 | ZNetScene object streaming | Performance.WorldStreaming | Performance | VPO, FGN |
@@ -28,11 +30,12 @@ Ainda não há patches implementados. A tabela registra **domínios candidatos**
 | CraftingStation extensions | Compatibility.CraftingStation | Crafting | StationExtensionGuard, WorkbenchesPlus |
 | Inventory topology/save | Inventory.Topology | Equipment, QuickSlots, Tombstone | ExtraSlots, ValheimPlus |
 | InventoryGui crafting list | Crafting.UI | Workbench UI | WorkbenchesPlus, ValheimPlus |
-| Piece placement/building | Building.Placement | Plan/Blueprint/Admin | PlanBuild, ValheimPlus |
+| Piece placement/building | Building.Placement | Plan, Blueprint, Administration | PlanBuild, ValheimPlus |
 | Minimap/map state | Map.Core | SharedMap, Portals, WebMap snapshots | V+, TheGreatestMap, Portal |
-| Player guardian powers/status effects | Powers.Core | Gameplay/UI | PassivePowers, ValheimPlus |
+| Player guardian powers/status effects | Powers.Core | Gameplay, UI | PassivePowers, ValheimPlus |
 | Zone/world simulation | Network.WorldSimulation | Raids, Spawn, WebMap snapshot | FGN, V+ |
-| Container discovery/access | Core.WorldIndex + Storage | Craft, Build, Grab, Admin | GrabMaterials, V+, GearAndStorage |
+| Container discovery/indexing | Core.WorldIndex | Storage, Crafting, Building, Administration | GrabMaterials, V+, GearAndStorage |
+| Container inventory transfer/access policy | Storage.ContainerTransactions | Crafting, Building, Grab, Administration | GrabMaterials, V+, GearAndStorage |
 
 ## Tipos de patch
 

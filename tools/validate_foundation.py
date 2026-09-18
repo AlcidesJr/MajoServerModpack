@@ -72,6 +72,7 @@ conflicts = text("docs/CONFLICTS.md")
 deps = text("docs/DEPENDENCIES.md")
 versioning = text("docs/VERSIONING.md")
 status = text("work/MAJO-000/STATUS.md")
+patch_ownership = text("docs/PATCH-OWNERSHIP.md")
 
 for project in REFERENCE_PROJECTS:
     if project not in refs:
@@ -107,3 +108,4 @@ print(f"- required files: {len(REQUIRED)}")
 print(f"- reference projects: {len(REFERENCE_PROJECTS)}")
 print("- conflict categories: 7")
 print("- feature catalog: no TBD")
+print("- patch ownership: one owner per critical surface")
