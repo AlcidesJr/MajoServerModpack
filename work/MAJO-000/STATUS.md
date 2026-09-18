@@ -1,25 +1,40 @@
 # STATUS — MAJO-000
 
 TASK: MAJO-000
-STATE: READY_TO_MERGE
-BRANCH: task/MAJO-000-foundation-governance
-CONTENT_HEAD: 3aa0b5bc49ad2801c56710f5af07bfd5823c9054
-REVIEW_TARGET: PR #2 tip reviewed at fba306a016ee53b7bded77e58b0cd21baa006b93
-PR: #2
+STATE: DONE
+BRANCH: task/MAJO-000-closeout
+IMPLEMENTATION_PR: #2
+IMPLEMENTATION_MERGE_SHA: f447bc28687e0635f999996465ed17aea595ae76
+CLOSEOUT_PR: #3
 BLOCKED_BY: none
 DEFERRED_GATE: none
 SECURITY: PASS
 
-## Próximo gate
+## Resultado final
 
-Integrar o PR #2 em `main`. Após o merge, registrar o merge SHA e executar o closeout documental antes de declarar DONE.
+Fundação arquitetural e de governança concluída.
+
+Foram formalizados:
+
+- BepInEx + Jötunn como frameworks de plataforma;
+- independência de mods funcionais de terceiros;
+- Majo.Platform / Majo.Core / Majo.Modules;
+- versionamento MAJOR.MINOR.PATCH iniciado em 0.0.0;
+- authority model;
+- SecureRpcGateway como futura trust boundary;
+- patch ownership;
+- InputRegistry;
+- catálogo de referências e conflitos;
+- security baseline;
+- governança reproduzível via GitHub Actions.
+
+## Integração
+
+- Implementation PR #2: MERGED
+- Implementation merge SHA: `f447bc28687e0635f999996465ed17aea595ae76`
+- Closeout PR #3: este PR
+- Issue #1: será encerrada automaticamente quando o PR #3 for integrado.
 
 ## Última atualização
 
-2026-09-18 — review independente PASS; SECURITY_REVIEW revalidado com PASS; governança verde; tarefa pronta para merge.
-
-## Observações operacionais
-
-- `CONTENT_HEAD` é o último commit substantivo.
-- Commits posteriores de STATUS/EVIDENCE/REVIEW/BOARD são metadata-only conforme `docs/WORKFLOW.md`.
-- Nenhuma funcionalidade runtime foi implementada.
+2026-09-18 — closeout final preparado. Após o merge do PR #3, este estado DONE passa a ser canônico em `main`.
