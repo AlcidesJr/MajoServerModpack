@@ -1,9 +1,9 @@
 # STATUS — MAJO-000
 
 TASK: MAJO-000
-STATE: VERIFYING
+STATE: IN_REVIEW
 BRANCH: task/MAJO-000-foundation-governance
-HEAD: aebdf52edddbb8f38af36f91121bf65372e59ff4
+HEAD: 6d1531643975a284c8bab7292f6675aeaef21c84
 PR: #2
 BLOCKED_BY: none
 DEFERRED_GATE: none
@@ -11,7 +11,7 @@ SECURITY: pending
 
 ## Próximo gate
 
-Executar revisão crítica do contrato arquitetural e security review da fundação.
+Concluir review independente do contrato arquitetural; depois executar SECURITY_REVIEW.
 
 ## Última atualização
 
