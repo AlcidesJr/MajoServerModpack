@@ -1,0 +1,32 @@
+name: governance
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "task/**"
+
+permissions:
+  contents: read
+
+jobs:
+  foundation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+
+      - name: Validate MAJO-000 foundation
+        run: python3 tools/validate_foundation.py
+
+      - name: Check whitespace errors
+        shell: bash
+        run: |
+          if git rev-parse --verify origin/main >/dev/null 2>&1; then
+            git diff --check origin/main...HEAD
+          else
+            git diff --check HEAD^ HEAD
+          fi
