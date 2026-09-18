@@ -160,6 +160,21 @@ Versões independentes previstas:
 
 Serviços compartilhados devem impedir trabalho duplicado. Exemplo: um `WorldIndex` pode alimentar Storage, WebMap, Admin e Diagnostics sem quatro scans independentes.
 
+## Serviços externos
+
+Qualquer listener HTTP/WebSocket futuro pertence a uma fronteira distinta do Unity/game thread.
+
+Regras de fundação:
+
+- serviço opcional desabilitado por padrão;
+- bind restritivo por padrão (loopback quando funcionalmente possível);
+- exposição em LAN/WAN exige configuração explícita;
+- nenhuma trust decision baseada somente em IP/header fornecido pelo cliente;
+- autenticação/autorização para endpoints mutáveis ou dados administrativos;
+- rate limit e limites de payload;
+- paths de export/import normalizados e confinados a diretórios permitidos;
+- threads HTTP/WebSocket consomem snapshots imutáveis/filas e não manipulam estado Unity mutável diretamente.
+
 ## Distribuição
 
 Meta arquitetural: uma DLL funcional principal do Majo. BepInEx/Jötunn permanecem dependências de plataforma externas.

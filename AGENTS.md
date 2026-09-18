@@ -60,7 +60,8 @@ Toda feature deve ser avaliada quanto a:
 3. conflito de regras/configurações;
 4. conflito de persistência/dados;
 5. conflito de performance/duplicação de scans;
-6. conflito de rede/ownership/RPC.
+6. conflito de rede/ownership/RPC;
+7. conflito de input/UI/foco/hotkeys.
 
 Métodos críticos do Valheim devem ter ownership explícito no `PatchCoordinator`. Sempre que razoável, um hot path deve possuir um único ponto de patch Majo.
 

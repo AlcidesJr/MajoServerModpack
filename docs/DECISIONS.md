@@ -47,3 +47,13 @@
 **Decisão:** hotkeys e gamepad bindings do Majo passam por `InputRegistry`, com contexto e detecção de conflito.
 
 **Motivo:** um modpack unificado não pode reproduzir conflitos de teclas comuns em coleções de mods independentes.
+
+## ADR-011 — Supply chain controlada
+
+**Decisão:** versões de BepInEx/Jötunn são promovidas manualmente e registradas com origem/versão/hash do artefato testado quando aplicável. O Majo não faz auto-update de frameworks.
+
+## ADR-012 — Serviços externos seguros por padrão
+
+**Decisão:** qualquer serviço HTTP/WebSocket futuro, incluindo WebMap, nasce desabilitado e com exposição mínima por padrão. Binding público, autenticação e proxy externo são decisões explícitas do operador.
+
+**Motivo:** não transformar uma feature opcional em superfície de rede pública acidental.

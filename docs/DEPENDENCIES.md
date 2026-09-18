@@ -70,3 +70,22 @@ Qualquer proposta de nova dependência de runtime deve responder:
 - plano de substituição/rollback.
 
 Sem decisão versionada, a dependência não entra.
+
+
+## Supply chain e promoção
+
+Framework aprovado não significa versão automaticamente confiável.
+
+Toda promoção de BepInEx/Jötunn para uma versão suportada deve registrar, quando houver artefato distribuído:
+
+- versão exata;
+- origem oficial usada;
+- commit/tag upstream correspondente quando disponível;
+- SHA-256 do artefato efetivamente testado;
+- data da validação;
+- combinação Valheim/BepInEx/Jötunn;
+- resultado dos gates.
+
+O Majo não deve baixar ou atualizar frameworks automaticamente em runtime.
+
+Pacotes obtidos de mirrors/reuploads não entram na matriz oficial sem validação explícita contra a origem escolhida.

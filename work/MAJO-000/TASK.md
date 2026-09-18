@@ -42,7 +42,7 @@ O projeto pretende consolidar, reimplementar e evoluir funcionalidades inspirada
 - [x] Compatibilidade por lado/capability e ownership de input documentados.
 - [x] Catálogo funcional das referências revisado em profundidade e vinculado à matriz de conflitos.
 - [ ] Review independente concluído.
-- [ ] Security review da fundação concluído.
+- [ ] Security review da fundação concluído — findings de supply chain/WebMap hardening em correção.
 - [ ] PR integrado e closeout registrado.
 
 ## Dependências
