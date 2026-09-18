@@ -10,12 +10,9 @@
 ## Resultado
 
 REVIEW: PASS
+SECURITY: PASS
 
-### Autorrevisão
-
-PASS — escopo documental coerente; nenhum runtime/gameplay entrou no diff.
-
-### Revisão independente
+## Revisão independente
 
 PASS no tip `fba306a016ee53b7bded77e58b0cd21baa006b93`.
 
@@ -46,11 +43,19 @@ Threads abertas: 0.
 - [x] Evidências reproduzíveis associadas a runs GitHub
 - [x] CI do workflow corrigido PASS
 - [x] Rereview independente sem findings efetivos pendentes
+- [x] SECURITY_REVIEW explicitamente revalidado
 
 ## Segurança
 
-Transicionado formalmente para SECURITY_REVIEW. Revalidação final do baseline em andamento.
+PASS.
+
+- peer identity e autorização server-side;
+- privileged RPC fail-closed;
+- supply chain de frameworks fixada/promovida manualmente;
+- HTTP/WebSocket/WebMap seguro por padrão;
+- persistência/import/export com confinamento e validação;
+- nenhum segredo ou runtime neste PR.
 
 ## Conclusão
 
-Review independente concluído com PASS. Próximo estado obrigatório: SECURITY_REVIEW.
+A MAJO-000 está pronta para merge. Após integração, executar closeout documental e registrar o merge SHA antes de DONE.
