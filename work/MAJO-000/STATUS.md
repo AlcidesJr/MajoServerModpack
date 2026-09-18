@@ -3,7 +3,7 @@
 TASK: MAJO-000
 STATE: IN_REVIEW
 BRANCH: task/MAJO-000-foundation-governance
-CONTENT_HEAD: b846eb0d4e09970a4550ff58c0f5cdb37204f052
+CONTENT_HEAD: pending-current-substantive-head
 REVIEW_TARGET: PR #2 current tip
 PR: #2
 BLOCKED_BY: none
@@ -12,11 +12,11 @@ SECURITY: PASS
 
 ## Próximo gate
 
-Revisão independente do conteúdo corrigido. Se não houver finding efetivo novo, avançar para READY_TO_MERGE.
+Corrigir e verificar os findings do rereview. Após rereview independente limpo, transicionar explicitamente para SECURITY_REVIEW, revalidar o security baseline no HEAD aprovado e somente então avançar para READY_TO_MERGE.
 
 ## Última atualização
 
-2026-09-18 — findings P2 tratados; security review concluído; validação reproduzível adicionada; aguardando rereview independente.
+2026-09-18 — rereview independente encontrou 3 novos P2; correções em andamento antes de novo rereview.
 
 ## Observações operacionais
 
