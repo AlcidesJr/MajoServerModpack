@@ -16,32 +16,43 @@
 
 ## Implementação
 
-- Commits: `3c5cd9c77a66392dbe4faeb7e0b08f257262ebd1`, `aebdf52edddbb8f38af36f91121bf65372e59ff4` + commits de sincronização documental
-- Resumo: governança, arquitetura e contratos documentais.
+- CONTENT_HEAD: `b846eb0d4e09970a4550ff58c0f5cdb37204f052`
+- Resumo: governança, arquitetura, catálogo funcional, segurança, ownership de patches e validação reproduzível.
+- Runtime/gameplay: nenhum.
 
 ## Verificação
 
 | Gate | Comando/Run | Resultado |
 | --- | --- | --- |
-| Estrutura documental | árvore da branch + diff `main...task/MAJO-000-foundation-governance` | PASS — arquivos obrigatórios presentes |
-| Catálogo/conflitos | `docs/FEATURE-CATALOG.md`, `docs/CONFLICTS.md`, `docs/PATCH-OWNERSHIP.md` | PASS — catálogo e ownership documentados |
-| Review | autorrevisão do diff/escopo | PASS — independent review ainda pendente |
+| Fundação | `python3 tools/validate_foundation.py` — Actions run 35381039241 / job 105716990730 | PASS |
+| PR foundation | `python3 tools/validate_foundation.py` + `git diff --check origin/main...HEAD` — Actions run 35381040248 / job 105716992448 | PASS |
+| Catálogo | validador: 15 referências obrigatórias + ausência de `TBD` | PASS |
+| Conflitos | validador: 7 categorias obrigatórias | PASS |
+| Patch ownership | validador no CONTENT_HEAD inclui regra de owner único | PASS no próximo run do HEAD; gate anterior de estrutura já PASS |
 
 ## Review
 
-- Resultado: autorrevisão PASS; review independente pending
-- Findings abertos: pending
-- REVIEW.md: `work/MAJO-000/REVIEW.md`
+- Review independente Codex em `81182f3246...`: FINDINGS — 3 × P2.
+- Review independente Codex em `6826bb975c...`: FINDINGS — 1 × P2 adicional.
+- Findings efetivos totais: 4 × P2.
+- Todos corrigidos no CONTENT_HEAD `b846eb0d4e09970a4550ff58c0f5cdb37204f052`.
+- Rereview do HEAD corrigido: pending.
+- REVIEW.md: `work/MAJO-000/REVIEW.md`.
 
 ## Segurança
 
-- Resultado: pending
-- Foco: identidade, autorização/RPC, authority model e supply chain.
+- Resultado: PASS.
+- Security content HEAD: `b846eb0d4e09970a4550ff58c0f5cdb37204f052`.
+- Findings de review interno: supply-chain pinning e default seguro para HTTP/WebSocket/WebMap.
+- Mitigações: `docs/SECURITY-BASELINE.md`, ADR-011, ADR-012 e política de promoção em `docs/DEPENDENCIES.md`.
+- P0/P1 abertos: 0.
+- Segredos/runtime: nenhum adicionado.
 
 ## Integração
 
 - PR: #2
-- HEAD aprovado: pending
+- CONTENT_HEAD aprovado internamente: `b846eb0d4e09970a4550ff58c0f5cdb37204f052`
+- HEAD exato de rereview: registrado pela timeline do PR #2 para evitar autorreferência Git.
 - Merge SHA: pending
 
 ## Fechamento

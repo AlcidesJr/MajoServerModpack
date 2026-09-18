@@ -3,20 +3,23 @@
 TASK: MAJO-000
 STATE: IN_REVIEW
 BRANCH: task/MAJO-000-foundation-governance
-HEAD: 6d1531643975a284c8bab7292f6675aeaef21c84
+CONTENT_HEAD: b846eb0d4e09970a4550ff58c0f5cdb37204f052
+REVIEW_TARGET: PR #2 current tip
 PR: #2
 BLOCKED_BY: none
 DEFERRED_GATE: none
-SECURITY: pending
+SECURITY: PASS
 
 ## Próximo gate
 
-Concluir review independente do contrato arquitetural; depois executar SECURITY_REVIEW.
+Revisão independente do conteúdo corrigido. Se não houver finding efetivo novo, avançar para READY_TO_MERGE.
 
 ## Última atualização
 
-2026-09-18 — bootstrap concluído; issue e branch abertas; fundação arquitetural em implementação.
+2026-09-18 — findings P2 tratados; security review concluído; validação reproduzível adicionada; aguardando rereview independente.
 
 ## Observações operacionais
 
-- Nenhuma funcionalidade runtime deve entrar nesta tarefa.
+- `CONTENT_HEAD` é o último commit substantivo. Commits posteriores de STATUS/EVIDENCE/REVIEW/BOARD são metadata-only conforme `docs/WORKFLOW.md`.
+- O tip exato submetido ao review é o HEAD do PR #2 na timeline do GitHub.
+- Nenhuma funcionalidade runtime foi implementada.
