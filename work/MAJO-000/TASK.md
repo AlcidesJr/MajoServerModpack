@@ -39,7 +39,7 @@ O projeto pretende consolidar, reimplementar e evoluir funcionalidades inspirada
 - [x] Conflitos funcionais/técnicos formalizados.
 - [x] Autoridade e princípio de segurança RPC registrados.
 - [x] Board inicial criado.
-- [ ] Catálogo funcional das referências revisado em profundidade e vinculado à matriz de conflitos.
+- [x] Catálogo funcional das referências revisado em profundidade e vinculado à matriz de conflitos.
 - [ ] Review independente concluído.
 - [ ] Security review da fundação concluído.
 - [ ] PR integrado e closeout registrado.

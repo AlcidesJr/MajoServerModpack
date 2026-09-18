@@ -39,3 +39,10 @@ Quando houver adaptação efetiva de código, registrar origem e atribuição/li
 ## Atualizações upstream
 
 Upstream pode continuar sendo acompanhado por inteligência técnica. Novos fixes e soluções são avaliados por diff/changelog e, quando úteis, originam tarefa Majo própria.
+
+
+## Catálogo aprofundado
+
+- `docs/FEATURE-CATALOG.md` — features, autoridade, riscos e destino Majo.
+- `docs/PATCH-OWNERSHIP.md` — ownership inicial das superfícies críticas.
+- `docs/MODULE-ROADMAP.md` — ordem arquitetural para expansão futura.
