@@ -16,15 +16,15 @@
 
 ## Implementação
 
-- Commits: `3c5cd9c77a66392dbe4faeb7e0b08f257262ebd1`
+- Commits: `3c5cd9c77a66392dbe4faeb7e0b08f257262ebd1`, `aebdf52edddbb8f38af36f91121bf65372e59ff4` + commits de sincronização documental
 - Resumo: governança, arquitetura e contratos documentais.
 
 ## Verificação
 
 | Gate | Comando/Run | Resultado |
 | --- | --- | --- |
-| Estrutura documental | pending | pending |
-| Catálogo/conflitos | pending | pending |
+| Estrutura documental | árvore da branch + diff `main...task/MAJO-000-foundation-governance` | PASS — arquivos obrigatórios presentes |
+| Catálogo/conflitos | `docs/FEATURE-CATALOG.md`, `docs/CONFLICTS.md`, `docs/PATCH-OWNERSHIP.md` | PASS — catálogo e ownership documentados |
 | Review | pending | pending |
 
 ## Review
