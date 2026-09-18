@@ -67,13 +67,16 @@ jobs:
     needs: core-tests
     runs-on: ubuntu-latest
     env:
-      VALHEIM_DIR: ${{ runner.temp }}/valheim-server
-      STEAMCMD_DIR: ${{ runner.temp }}/steamcmd
-      BEPINEX_ROOT: ${{ runner.temp }}/bepinex
       BEPINEX_SHA256: e538560be65739f562519ab518a75f9c65b3f57f87457403ae7cde683c12dab7
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Prepare build paths
+        run: |
+          echo "VALHEIM_DIR=$RUNNER_TEMP/valheim-server" >> "$GITHUB_ENV"
+          echo "STEAMCMD_DIR=$RUNNER_TEMP/steamcmd" >> "$GITHUB_ENV"
+          echo "BEPINEX_ROOT=$RUNNER_TEMP/bepinex" >> "$GITHUB_ENV"
 
       - name: Install SteamCMD prerequisites
         run: |
