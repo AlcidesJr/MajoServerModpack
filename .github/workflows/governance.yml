@@ -1,0 +1,59 @@
+name: governance
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - "task/**"
+
+permissions:
+  contents: read
+
+jobs:
+  foundation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+
+      - name: Validate MAJO-000 foundation
+        run: python3 tools/validate_foundation.py
+
+      - name: Check whitespace errors
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_BEFORE: ${{ github.event.before }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            git diff --check "$PR_BASE_SHA"...HEAD
+            exit 0
+          fi
+
+          # Existing push: validate exactly the range introduced by the push.
+          if [[ -n "$EVENT_BEFORE" && ! "$EVENT_BEFORE" =~ ^0+$ ]] &&
+             git cat-file -e "$EVENT_BEFORE^{commit}" 2>/dev/null; then
+            git diff --check "$EVENT_BEFORE" HEAD
+            exit 0
+          fi
+
+          # First push of a new branch: GitHub reports an all-zero "before".
+          # Compare the complete branch delta against the merge-base with the
+          # repository default branch, not merely HEAD^..HEAD.
+          git fetch --no-tags origin "$DEFAULT_BRANCH"
+          if git show-ref --verify --quiet "refs/remotes/origin/$DEFAULT_BRANCH"; then
+            BASE_SHA="$(git merge-base "origin/$DEFAULT_BRANCH" HEAD)"
+            git diff --check "$BASE_SHA" HEAD
+            exit 0
+          fi
+
+          # Truly parentless repository fallback: validate the complete tree.
+          EMPTY_TREE="$(git hash-object -t tree /dev/null)"
+          git diff --check "$EMPTY_TREE" HEAD
