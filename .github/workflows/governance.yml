@@ -28,6 +28,7 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
           EVENT_BEFORE: ${{ github.event.before }}
           PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
         run: |
           set -euo pipefail
 
@@ -36,13 +37,23 @@ jobs:
             exit 0
           fi
 
-          # For push events, compare exactly what the push introduced.
-          # A new branch may report an all-zero "before" SHA, so fall back
-          # to the current commit's first parent when available.
-          if [[ -n "$EVENT_BEFORE" && ! "$EVENT_BEFORE" =~ ^0+$ ]] &&              git cat-file -e "$EVENT_BEFORE^{commit}" 2>/dev/null; then
+          # Existing push: validate exactly the range introduced by the push.
+          if [[ -n "$EVENT_BEFORE" && ! "$EVENT_BEFORE" =~ ^0+$ ]] &&
+             git cat-file -e "$EVENT_BEFORE^{commit}" 2>/dev/null; then
             git diff --check "$EVENT_BEFORE" HEAD
-          elif git rev-parse --verify HEAD^ >/dev/null 2>&1; then
-            git diff --check HEAD^ HEAD
-          else
-            git diff --check --root HEAD
+            exit 0
           fi
+
+          # First push of a new branch: GitHub reports an all-zero "before".
+          # Compare the complete branch delta against the merge-base with the
+          # repository default branch, not merely HEAD^..HEAD.
+          git fetch --no-tags origin "$DEFAULT_BRANCH"
+          if git show-ref --verify --quiet "refs/remotes/origin/$DEFAULT_BRANCH"; then
+            BASE_SHA="$(git merge-base "origin/$DEFAULT_BRANCH" HEAD)"
+            git diff --check "$BASE_SHA" HEAD
+            exit 0
+          fi
+
+          # Truly parentless repository fallback: validate the complete tree.
+          EMPTY_TREE="$(git hash-object -t tree /dev/null)"
+          git diff --check "$EMPTY_TREE" HEAD
