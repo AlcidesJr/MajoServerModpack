@@ -16,7 +16,7 @@
 
 ## Implementação
 
-- Commits: pending
+- Commits: `3c5cd9c77a66392dbe4faeb7e0b08f257262ebd1`
 - Resumo: governança, arquitetura e contratos documentais.
 
 ## Verificação
@@ -40,7 +40,7 @@
 
 ## Integração
 
-- PR: pending
+- PR: #2
 - HEAD aprovado: pending
 - Merge SHA: pending
 
