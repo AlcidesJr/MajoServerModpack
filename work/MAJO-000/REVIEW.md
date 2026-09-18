@@ -4,12 +4,12 @@
 
 - TASK: `work/MAJO-000/TASK.md`
 - PLAN: `work/MAJO-000/PLAN.md`
-- CONTENT_HEAD: pending — correções do rereview atual alteram conteúdo
+- CONTENT_HEAD: `c09bffdfaddb216ee5a0571cbd07ecd994778ffe`
 - Diff: `main...task/MAJO-000-foundation-governance`
 
 ## Resultado
 
-REVIEW: FINDINGS — correções do rereview em verificação
+REVIEW: FINDINGS_RESOLVED — rereview independente final pending
 
 ### Autorrevisão
 
@@ -50,7 +50,7 @@ PASS — escopo documental coerente; nenhum runtime/gameplay entrou no diff.
 - Origem: Codex rereview no commit `81edb7823e...`.
 - Impacto: `origin/main...HEAD` em push de `main` compara o commit consigo mesmo e pode deixar whitespace errors passarem.
 - Correção: workflow distingue `pull_request` de `push`; push usa `github.event.before → HEAD` com fallback seguro para branch nova/root.
-- Status: VERIFYING — aguarda run do novo CONTENT_HEAD.
+- Status: RESOLVED — runs 35382076587 (push) e 35382081125 (PR) PASS.
 
 ### P2 — Evidência prematura do ownership
 
@@ -74,7 +74,7 @@ PASS — escopo documental coerente; nenhum runtime/gameplay entrou no diff.
 - [x] Sem expansão indevida de escopo runtime
 - [x] Documentação consistente no CONTENT_HEAD
 - [x] Evidências reproduzíveis associadas a runs GitHub
-- [ ] CI do workflow corrigido PASS
+- [x] CI do workflow corrigido PASS
 - [ ] Rereview independente sem findings efetivos pendentes
 
 ## Segurança
@@ -90,4 +90,4 @@ SECURITY: PASS
 
 ## Conclusão
 
-Findings de governança corrigidos; falta validar o novo workflow e obter rereview independente limpo. Depois disso a tarefa deve passar explicitamente por SECURITY_REVIEW antes de READY_TO_MERGE.
+Todos os findings conhecidos estão corrigidos e verificados. Falta rereview independente final; depois a tarefa deve passar explicitamente por SECURITY_REVIEW antes de READY_TO_MERGE.

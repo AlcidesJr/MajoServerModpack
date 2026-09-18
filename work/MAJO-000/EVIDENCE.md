@@ -16,7 +16,7 @@
 
 ## Implementação
 
-- CONTENT_HEAD: pending — será fixado no commit substantivo que corrige o rereview atual
+- CONTENT_HEAD: `c09bffdfaddb216ee5a0571cbd07ecd994778ffe`
 - Resumo: governança, arquitetura, catálogo funcional, segurança, ownership de patches e validação reproduzível.
 - Runtime/gameplay: nenhum.
 
@@ -29,7 +29,8 @@
 | Catálogo | validador: 15 referências obrigatórias + ausência de `TBD` | PASS |
 | Conflitos | validador: 7 categorias obrigatórias | PASS |
 | Patch ownership | Actions runs 35381334678 (push) e 35381340295 (PR), HEAD `81edb782...` | PASS — validador com owner único executado |
-| Push diff semantics | workflow atualizado para usar `github.event.before` em push e base SHA em PR | VERIFYING — requer run do novo CONTENT_HEAD |
+| Push diff semantics | Actions run 35382076587 (push), HEAD `c09bffd...` | PASS — usa `github.event.before → HEAD` |
+| PR diff semantics | Actions run 35382081125 (pull_request), HEAD `c09bffd...` | PASS — usa base SHA do PR → HEAD |
 
 ## Review
 
@@ -38,7 +39,7 @@
 - Findings efetivos anteriores: 4 × P2, todos corrigidos.
 - Rereview Codex em `81edb7823e...`: FINDINGS — 3 × P2 adicionais.
 - P2 adicionais: semântica do diff em push para `main`; evidência prematura do ownership; transição obrigatória por `SECURITY_REVIEW`.
-- Correções aplicadas ao conteúdo; verificação do workflow atualizada ainda pendente do próximo run.
+- Correções aplicadas e verificadas nos runs 35382076587 e 35382081125.
 - Novo rereview independente após CI: pending.
 - REVIEW.md: `work/MAJO-000/REVIEW.md`.
 
@@ -54,7 +55,7 @@
 ## Integração
 
 - PR: #2
-- CONTENT_HEAD aprovado internamente: pending após correções do rereview
+- CONTENT_HEAD aprovado internamente: `c09bffdfaddb216ee5a0571cbd07ecd994778ffe`
 - HEAD exato de rereview: registrado pela timeline do PR #2 para evitar autorreferência Git.
 - Merge SHA: pending
 
