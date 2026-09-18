@@ -9,11 +9,15 @@
 
 ## Resultado
 
-REVIEW: pending
+REVIEW: pending independent review
+
+### Autorrevisão
+
+PASS — escopo documental coerente; nenhum código/runtime entrou no diff; arquitetura, conflitos, compatibilidade e input ownership estão registrados.
 
 ## Findings abertos
 
-Nenhum review independente executado ainda.
+Nenhum finding na autorrevisão. Review independente ainda não executado.
 
 ## Verificações
 
