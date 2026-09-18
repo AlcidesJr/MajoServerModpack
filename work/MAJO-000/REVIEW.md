@@ -4,7 +4,7 @@
 
 - TASK: `work/MAJO-000/TASK.md`
 - PLAN: `work/MAJO-000/PLAN.md`
-- CONTENT_HEAD: `c09bffdfaddb216ee5a0571cbd07ecd994778ffe`
+- CONTENT_HEAD: `3aa0b5bc49ad2801c56710f5af07bfd5823c9054`
 - Diff: `main...task/MAJO-000-foundation-governance`
 
 ## Resultado
@@ -64,6 +64,14 @@ PASS — escopo documental coerente; nenhum runtime/gameplay entrou no diff.
 - Origem: Codex rereview no commit `81edb7823e...`.
 - Impacto: próximo gate textual pulava o estado obrigatório `SECURITY_REVIEW`.
 - Correção: fluxo agora exige rereview limpo → `SECURITY_REVIEW` explícito → revalidação → `READY_TO_MERGE`.
+- Status: RESOLVED.
+
+### P2 — Primeiro push de branch nova verificava apenas o último commit
+
+- Origem: Codex rereview no commit `82a8cf8a58...`.
+- Impacto: em branch recém-criada, `github.event.before=000...` levava ao fallback `HEAD^ HEAD`, cobrindo apenas o último commit.
+- Correção: primeiro push agora compara `HEAD` com `merge-base(origin/<default-branch>, HEAD)`; árvore vazia é usada apenas sem baseline.
+- Evidência: runs 35388497710 (push) e 35388501155 (PR), ambos PASS.
 - Status: RESOLVED.
 
 ## Verificações

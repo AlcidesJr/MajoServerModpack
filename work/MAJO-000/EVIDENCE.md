@@ -16,7 +16,7 @@
 
 ## Implementação
 
-- CONTENT_HEAD: `c09bffdfaddb216ee5a0571cbd07ecd994778ffe`
+- CONTENT_HEAD: `3aa0b5bc49ad2801c56710f5af07bfd5823c9054`
 - Resumo: governança, arquitetura, catálogo funcional, segurança, ownership de patches e validação reproduzível.
 - Runtime/gameplay: nenhum.
 
@@ -31,6 +31,7 @@
 | Patch ownership | Actions runs 35381334678 (push) e 35381340295 (PR), HEAD `81edb782...` | PASS — validador com owner único executado |
 | Push diff semantics | Actions run 35382076587 (push), HEAD `c09bffd...` | PASS — usa `github.event.before → HEAD` |
 | PR diff semantics | Actions run 35382081125 (pull_request), HEAD `c09bffd...` | PASS — usa base SHA do PR → HEAD |
+| First branch push semantics | Actions runs 35388497710 (push) e 35388501155 (PR), CONTENT_HEAD `3aa0b5b...` | PASS — branch nova usa merge-base com default branch |
 
 ## Review
 
@@ -40,7 +41,10 @@
 - Rereview Codex em `81edb7823e...`: FINDINGS — 3 × P2 adicionais.
 - P2 adicionais: semântica do diff em push para `main`; evidência prematura do ownership; transição obrigatória por `SECURITY_REVIEW`.
 - Correções aplicadas e verificadas nos runs 35382076587 e 35382081125.
-- Novo rereview independente após CI: pending.
+- - Rereview Codex em `82a8cf8a58...`: FINDING — 1 × P2 adicional sobre primeiro push de branch nova.
+- Correção aplicada em `3aa0b5bc49ad2801c56710f5af07bfd5823c9054`.
+- Runs 35388497710 (push) e 35388501155 (PR): PASS.
+- Novo rereview independente após essa correção: pending.
 - REVIEW.md: `work/MAJO-000/REVIEW.md`.
 
 ## Segurança

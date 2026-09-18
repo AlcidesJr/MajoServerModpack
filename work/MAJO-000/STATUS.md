@@ -3,7 +3,7 @@
 TASK: MAJO-000
 STATE: IN_REVIEW
 BRANCH: task/MAJO-000-foundation-governance
-CONTENT_HEAD: c09bffdfaddb216ee5a0571cbd07ecd994778ffe
+CONTENT_HEAD: 3aa0b5bc49ad2801c56710f5af07bfd5823c9054
 REVIEW_TARGET: PR #2 current tip
 PR: #2
 BLOCKED_BY: none
@@ -16,7 +16,7 @@ Obter rereview independente limpo do conteúdo corrigido. Em seguida transiciona
 
 ## Última atualização
 
-2026-09-18 — 3 P2 do rereview corrigidos e verificados; aguardando rereview independente final.
+2026-09-18 — último P2 de governança corrigido e verificado; aguardando rereview independente final.
 
 ## Observações operacionais
 
