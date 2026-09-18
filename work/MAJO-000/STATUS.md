@@ -3,8 +3,8 @@
 TASK: MAJO-000
 STATE: IMPLEMENTING
 BRANCH: task/MAJO-000-foundation-governance
-HEAD: pending
-PR: pending
+HEAD: 3c5cd9c77a66392dbe4faeb7e0b08f257262ebd1
+PR: #2
 BLOCKED_BY: none
 DEFERRED_GATE: none
 SECURITY: pending
