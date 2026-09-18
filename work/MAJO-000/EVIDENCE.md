@@ -25,11 +25,11 @@
 | --- | --- | --- |
 | Estrutura documental | árvore da branch + diff `main...task/MAJO-000-foundation-governance` | PASS — arquivos obrigatórios presentes |
 | Catálogo/conflitos | `docs/FEATURE-CATALOG.md`, `docs/CONFLICTS.md`, `docs/PATCH-OWNERSHIP.md` | PASS — catálogo e ownership documentados |
-| Review | pending | pending |
+| Review | autorrevisão do diff/escopo | PASS — independent review ainda pendente |
 
 ## Review
 
-- Resultado: pending
+- Resultado: autorrevisão PASS; review independente pending
 - Findings abertos: pending
 - REVIEW.md: `work/MAJO-000/REVIEW.md`
 
