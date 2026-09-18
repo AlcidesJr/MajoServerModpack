@@ -1,9 +1,9 @@
 # STATUS — MAJO-000
 
 TASK: MAJO-000
-STATE: IMPLEMENTING
+STATE: VERIFYING
 BRANCH: task/MAJO-000-foundation-governance
-HEAD: 3c5cd9c77a66392dbe4faeb7e0b08f257262ebd1
+HEAD: aebdf52edddbb8f38af36f91121bf65372e59ff4
 PR: #2
 BLOCKED_BY: none
 DEFERRED_GATE: none
@@ -11,7 +11,7 @@ SECURITY: pending
 
 ## Próximo gate
 
-Aprofundar o catálogo funcional das referências e consolidar a matriz de sobreposição/conflitos antes de VERIFYING.
+Executar revisão crítica do contrato arquitetural e security review da fundação.
 
 ## Última atualização
 
