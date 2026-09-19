@@ -16,6 +16,7 @@ internal static class Program
         Run("Module missing dependency", TestMissingDependency);
         Run("Module cycle", TestDependencyCycle);
         Run("Module lifecycle", TestLifecycle);
+        Run("Module rejects reinitialization", TestModuleReinitialization);
         Run("Module failure isolation", TestFailureIsolation);
         Run("Input duplicate action", TestDuplicateInputAction);
         Run("Input conflict same context", TestInputConflictSameContext);
@@ -89,6 +90,21 @@ internal static class Program
             "base:init", "dependent:init",
             "base:start", "dependent:start",
             "dependent:stop", "base:stop");
+    }
+
+    private static void TestModuleReinitialization()
+    {
+        var registry = Registry();
+        registry.Register(Module("a"));
+
+        registry.InitializeAll();
+        registry.StartAll();
+
+        AssertThrows<InvalidOperationException>(() => registry.InitializeAll());
+        registry.StopAll();
+
+        Assert(State(registry.Snapshot(), "a") == ModuleLifecycleState.Stopped,
+            "started module must still be stoppable after rejected reinitialization");
     }
 
     private static void TestFailureIsolation()
