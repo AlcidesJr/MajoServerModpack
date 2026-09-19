@@ -9,8 +9,8 @@
 
 ## Resultado
 
-REVIEW: PASS
-SECURITY_REVIEW: PASS
+REVIEW: FINDINGS — remediação em andamento
+SECURITY_REVIEW: pending revalidation
 
 ## Evidência
 
@@ -55,4 +55,13 @@ PASS.
 
 ## Conclusão
 
-A MAJO-001 está READY_TO_MERGE.
+A MAJO-001 havia alcançado READY_TO_MERGE no HEAD original; o estado foi reaberto pela seção abaixo.
+
+## Reabertura por review tardio — 2026-09-19
+
+- P2 — `ValheimExecutionContextProvider` buscava `ZNet.m_openServer` como campo estático e lia com alvo nulo.
+- Impacto: em mundo local aberto para outros jogadores, o runtime podia reportar `LocalWorld` em vez de `ListenServer`.
+- Origem: thread publicada no PR #5 após o merge dos PRs #5 e #6.
+- Correção: commit `72855d45d413d5bcc9e9b0a9eed7c2acbc43df3e` busca o campo com `BindingFlags.Instance` e lê seu valor na instância `ZNet` atual.
+- Verificação local: governance PASS, testes puros PASS e `git diff --check` PASS.
+- Estado: VERIFYING; build real/CI, rereview e SECURITY_REVIEW pendentes.

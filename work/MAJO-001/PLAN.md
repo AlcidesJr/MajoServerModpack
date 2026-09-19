@@ -251,3 +251,17 @@ Reverter o PR da MAJO-001 remove a DLL/runtime e alterações de CI/documentaç�
 - [x] Riscos materiais tratados no plano.
 
 Estado autorizado após integração deste planejamento: `READY`, então `IMPLEMENTING`.
+
+## Remediação de review tardio — 2026-09-19
+
+O review automático publicou um finding P2 após os merges dos PRs #5 e #6: `m_openServer` é campo de instância de `ZNet`, mas o adapter o buscava com `BindingFlags.Static` e lia com alvo nulo. A MAJO-001 foi reaberta explicitamente.
+
+Plano restrito:
+
+1. buscar `m_openServer` com `BindingFlags.Instance`;
+2. ler o valor na instância `ZNet` já validada por `Detect()`;
+3. repetir testes puros, build real, validação de artefato e CI;
+4. executar rereview e SECURITY_REVIEW no HEAD corrigido;
+5. integrar a remediação e produzir novo closeout auditável.
+
+Rollback: reverter o PR de remediação restaura o comportamento anterior. Não há migration, persistência ou mudança de protocolo.

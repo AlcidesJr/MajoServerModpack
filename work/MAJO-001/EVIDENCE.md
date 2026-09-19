@@ -75,3 +75,24 @@ SECURITY_REVIEW: PASS.
 - BOARD.md: DONE
 - TASK acceptance: completo
 - Pendências: none
+
+## Reabertura por review tardio — 2026-09-19
+
+- O review automático publicou, após os merges dos PRs #5 e #6, um P2 aberto em `ValheimExecutionContextProvider`.
+- Problema: `ZNet.m_openServer` é campo de instância, mas era buscado com `BindingFlags.Static` e lido com alvo nulo.
+- Issue #4: reaberta para remediação explícita.
+- Branch: `task/MAJO-001-late-review-remediation`.
+- Escopo: corrigir somente o finding, repetir CI/review/security e refazer o closeout.
+- BLOCKED_BY: none.
+- DEFERRED_GATE: none.
+
+### Correção
+
+- CONTENT_HEAD: `72855d45d413d5bcc9e9b0a9eed7c2acbc43df3e`.
+- `m_openServer` é buscado com `BindingFlags.Instance` e lido a partir da instância `ZNet` atual.
+- `python tools/validate_foundation.py`: PASS.
+- `dotnet run --project tests/MajoServerModpack.Core.Tests/MajoServerModpack.Core.Tests.csproj -c Release`: PASS, 16 cenários.
+- `git diff --check`: PASS.
+- Build real/CI: pending.
+- Rereview: pending.
+- SECURITY_REVIEW: pending.
