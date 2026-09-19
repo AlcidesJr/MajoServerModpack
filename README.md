@@ -14,12 +14,14 @@ Ainda não há funcionalidades de gameplay do modpack. O núcleo atual fornece b
 
 ## Plataforma
 
-Baseline promovida pela MAJO-001:
+Baseline validada para build pela MAJO-001 e ainda candidata a suporte runtime:
 
 - **Valheim** `1.0.15`;
 - **BepInEx** `5.4.23.5` / BepInExPack_Valheim `5.4.2350`;
 - **Jötunn** `2.30.1`;
 - target do plugin: `net462`.
+
+O smoke dentro do Valheim ainda não foi executado; portanto, esta combinação não é declarada suportada em runtime.
 
 Nenhum mod funcional de terceiros é dependência do produto.
 

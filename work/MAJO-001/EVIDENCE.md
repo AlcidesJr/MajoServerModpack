@@ -9,7 +9,7 @@
 - BLOCKED_BY: none
 - DEFERRED_GATE: none
 
-## Baseline promovida
+## Baseline candidata validada para build
 
 - Valheim: `1.0.15`
 - Valheim Dedicated Server build ID: `25390671`
@@ -17,6 +17,8 @@
 - BepInExPack_Valheim: `5.4.2350`
 - Jötunn: `2.30.1`
 - Target: `net462`
+- Runtime smoke dentro do Valheim: NOT_RUN.
+- Estado de compatibilidade: candidata; não promovida como suportada em runtime.
 
 ## Implementação
 
@@ -130,3 +132,15 @@ SECURITY_REVIEW: PASS.
 - DEFERRED_GATE: none.
 
 `main` contém o fechamento canônico da MAJO-001 em DONE.
+
+## Reabertura por consistência da baseline — 2026-09-19
+
+- Finding tardio do PR #7: documentos de tarefa/README diziam baseline promovida, enquanto `docs/COMPATIBILITY.md` e `docs/BUILD.md` exigem smoke runtime para promoção.
+- Evidência disponível: build real e artefato PASS; smoke dentro do Valheim NOT_RUN.
+- Correção: manter a combinação como candidata e distinguir explicitamente build PASS de smoke runtime.
+- Issue #4: reaberta.
+- Branch: `task/MAJO-001-baseline-consistency`.
+- PR: pending.
+- Mudança de runtime: none.
+- BLOCKED_BY: none.
+- DEFERRED_GATE: none — smoke não foi declarado como gate satisfeito nem como gate de aceite da tarefa.
