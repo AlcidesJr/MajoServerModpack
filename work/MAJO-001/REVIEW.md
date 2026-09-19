@@ -64,4 +64,5 @@ A MAJO-001 havia alcançado READY_TO_MERGE no HEAD original; o estado foi reaber
 - Origem: thread publicada no PR #5 após o merge dos PRs #5 e #6.
 - Correção: commit `72855d45d413d5bcc9e9b0a9eed7c2acbc43df3e` busca o campo com `BindingFlags.Instance` e lê seu valor na instância `ZNet` atual.
 - Verificação local: governance PASS, testes puros PASS e `git diff --check` PASS.
-- Estado: VERIFYING; build real/CI, rereview e SECURITY_REVIEW pendentes.
+- CI: push run 35450718574 PASS; PR run 35450722406 PASS.
+- Estado: IN_REVIEW; rereview e SECURITY_REVIEW pendentes.

@@ -1,7 +1,7 @@
 # STATUS — MAJO-001
 
 TASK: MAJO-001
-STATE: VERIFYING
+STATE: IN_REVIEW
 BRANCH: task/MAJO-001-late-review-remediation
 BASE_HEAD: 3a5533085258dd86d700df84caa0e411cff20921
 CONTENT_HEAD: 72855d45d413d5bcc9e9b0a9eed7c2acbc43df3e
@@ -22,7 +22,8 @@ MAJO-001 reaberta explicitamente após um finding P2 tardio, publicado pelo revi
 - closeout anterior integrado via PR #6, merge SHA `52a479b45207b8ead0c764bb5cf977439b4134d2`;
 - issue #4: reaberta;
 - validação local: governance PASS, testes puros PASS, `git diff --check` PASS;
-- próximos gates: build real/CI, rereview, SECURITY_REVIEW, merge e novo closeout.
+- CI do PR #7: push run 35450718574 PASS; PR run 35450722406 PASS;
+- próximos gates: rereview, SECURITY_REVIEW, merge e novo closeout.
 
 ## Baseline promovida
 

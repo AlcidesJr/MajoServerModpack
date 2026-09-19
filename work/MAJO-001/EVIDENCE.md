@@ -94,6 +94,7 @@ SECURITY_REVIEW: PASS.
 - `python tools/validate_foundation.py`: PASS.
 - `dotnet run --project tests/MajoServerModpack.Core.Tests/MajoServerModpack.Core.Tests.csproj -c Release`: PASS, 16 cenários.
 - `git diff --check`: PASS.
-- Build real/CI: pending.
+- Push run 35450718574: governance, core tests, runtime build e artifact validation PASS.
+- PR run 35450722406: governance, core tests, runtime build e artifact validation PASS.
 - Rereview: pending.
 - SECURITY_REVIEW: pending.
