@@ -16,12 +16,11 @@
 - BepInEx upstream: `5.4.23.5`.
 - BepInExPack_Valheim: `5.4.2350`, baseado em BepInEx `5.4.23.5`.
 - Jötunn upstream: `2.30.1`.
-- Changelog Jötunn: 2.30.0 atualizou a maioria dos sistemas para Valheim 1.0.7; 2.30.1 contém correções adicionais para o sistema de build do Valheim 1.0.
-- `JotunnLib.csproj` v2.30.1: target `net462`.
-- `GameVersions` v2.30.1 fornece versão semântica de Valheim.
-- Jötunn documenta `GUIManager.IsHeadless()` para detecção precoce de dedicated/headless e `ZNetExtension` para local/client/server após ZNet.
+- Jötunn 2.30.x contém a adaptação à linha Valheim 1.0.
+- `JotunnLib` 2.30.1 usa `net462`.
+- Jötunn fornece `GUIManager.IsHeadless()` e `ZNetExtension` para sinais de runtime.
 
-Status: baseline candidata. Promoção depende dos gates da MAJO-001.
+Status: combinação validada pelo build automatizado desta tarefa; promoção canônica será registrada no closeout.
 
 ## Planejamento
 
@@ -32,18 +31,23 @@ Status: baseline candidata. Promoção depende dos gates da MAJO-001.
 
 ## Implementação
 
-- Commits: pending
-- Resumo: pending
+- CONTENT_HEAD: `8780223d7131569acf55a42d76802f3df50b3361`
+- Runtime: BepInEx bootstrap + Jötunn hard dependency controlada.
+- Core: ModuleRegistry, lifecycle, InputRegistry, PatchCoordinator, metadata e diagnostics.
+- Platform: logging/framework metadata e detecção de contexto Valheim.
+- Gameplay/RPC/config funcional: nenhum.
 
 ## Verificação
 
 | Gate | Comando/Run | Resultado |
 | --- | --- | --- |
-| Core tests | pending | pending |
-| Runtime build | pending | pending |
-| Artifact validation | pending | pending |
-| Governance | pending | pending |
-| CI | pending | pending |
+| Governance | GitHub Actions run 35408340023 / job foundation | PASS |
+| Core tests | GitHub Actions run 35408340023 / job core-tests | PASS |
+| Runtime build | GitHub Actions run 35408340023 / job runtime-build | PASS |
+| Artifact validation | run 35408340023 — somente `MajoServerModpack.dll` no artifact staging | PASS |
+| CI | run 35408340023 @ `8780223d7131569acf55a42d76802f3df50b3361` | PASS |
+
+O build provisionou Valheim Dedicated Server, BepInEx 5.4.23.5 com SHA-256 fixado, restaurou Jötunn 2.30.1 e compilou `net462`.
 
 ## Review
 
@@ -64,6 +68,6 @@ Status: baseline candidata. Promoção depende dos gates da MAJO-001.
 
 ## Fechamento
 
-- STATUS.md: em andamento
-- BOARD.md: em andamento
+- STATUS.md: IN_REVIEW
+- BOARD.md: IN_REVIEW
 - Pendências formalizadas: none
