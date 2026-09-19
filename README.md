@@ -4,20 +4,22 @@ Mod independente, modular e extensível para Valheim.
 
 ## Estado
 
-A fundação arquitetural e de governança foi concluída pela `MAJO-000`.
+As fundações de arquitetura/governança (`MAJO-000`) e o primeiro core runtime (`MAJO-001`) estão concluídos.
 
 Próxima frente planejada:
 
-- `MAJO-001 — Core runtime`
+- `MAJO-002 — Authority and secure networking`
 
-Ainda não há implementação funcional de gameplay. A próxima tarefa deve construir somente o núcleo de runtime definido no roadmap, sem antecipar módulos posteriores.
+Ainda não há funcionalidades de gameplay do modpack. O núcleo atual fornece bootstrap, lifecycle, registries, diagnostics, metadata e adapters mínimos de plataforma sobre BepInEx + Jötunn.
 
 ## Plataforma
 
-Dependências de plataforma aprovadas:
+Baseline promovida pela MAJO-001:
 
-- **BepInEx** — loader/framework base e infraestrutura de patching;
-- **Jötunn** — framework específico de Valheim, consumido por uma camada de adaptação própria.
+- **Valheim** `1.0.15`;
+- **BepInEx** `5.4.23.5` / BepInExPack_Valheim `5.4.2350`;
+- **Jötunn** `2.30.1`;
+- target do plugin: `net462`.
 
 Nenhum mod funcional de terceiros é dependência do produto.
 
