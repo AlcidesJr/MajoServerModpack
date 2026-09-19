@@ -135,6 +135,7 @@ SECURITY_REVIEW: PASS.
 
 ## Reabertura por consistência da baseline — 2026-09-19
 
+- Documentation CONTENT_HEAD: `3a10130d0f2e19bc203f1026830c34a4a5e89047`.
 - Finding tardio do PR #7: documentos de tarefa/README diziam baseline promovida, enquanto `docs/COMPATIBILITY.md` e `docs/BUILD.md` exigem smoke runtime para promoção.
 - Evidência disponível: build real e artefato PASS; smoke dentro do Valheim NOT_RUN.
 - Correção: manter a combinação como candidata e distinguir explicitamente build PASS de smoke runtime.

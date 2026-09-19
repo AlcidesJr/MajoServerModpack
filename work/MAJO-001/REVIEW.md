@@ -93,4 +93,5 @@ A MAJO-001 possui REVIEW e SECURITY_REVIEW em PASS e está canonicamente DONE.
 - P2 — a baseline foi descrita como promovida/suportada sem smoke real dentro do Valheim.
 - Evidência: build real PASS; runtime smoke NOT_RUN; `docs/COMPATIBILITY.md` exige smoke para promoção.
 - Correção: documentação passa a distinguir baseline candidata com build PASS de suporte runtime ainda não promovido.
+- CONTENT_HEAD documental: `3a10130d0f2e19bc203f1026830c34a4a5e89047`.
 - Estado: VERIFYING.
