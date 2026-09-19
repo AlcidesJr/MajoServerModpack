@@ -1,0 +1,8 @@
+**/bin/
+**/obj/
+artifacts/
+Environment.props
+.vs/
+.idea/
+*.user
+*.suo

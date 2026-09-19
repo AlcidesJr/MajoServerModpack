@@ -1,91 +1,98 @@
 # Dependências
 
-## Política
+## Princípio
 
-O MajoServerModpack aceita dependências externas somente quando representam **plataforma/framework** e reduzem trabalho estrutural que seria continuamente afetado por atualizações do Valheim.
+O MajoServerModpack evita depender de mods funcionais de terceiros. A regra é possuir a própria implementação e depender apenas de frameworks cuja função seja fornecer infraestrutura de modding.
 
-Mods funcionais de terceiros não são dependências.
+Uma dependência nova exige:
 
-## Dependências aprovadas
+1. necessidade arquitetural clara;
+2. análise de licença;
+3. risco de supply chain;
+4. custo de compatibilidade;
+5. impacto de runtime/performance;
+6. decisão documentada.
+
+## Dependências de plataforma aprovadas
 
 ### BepInEx
 
-Papel:
-- bootstrap/loader;
-- plugin lifecycle;
-- logging/config base;
-- Harmony/patch infrastructure.
+**Papel**
+
+- bootstrap do plugin;
+- loader;
+- lifecycle base;
+- logging base;
+- Harmony/patching disponível na plataforma.
+
+**Por que permanece dependência**
+
+Reimplementar loader/injeção/patch runtime seria custo alto, risco técnico e não é diferencial do produto.
 
 ### Jötunn
 
-Papel:
-- abstrações específicas de Valheim;
-- lifecycle de conteúdo;
-- serviços de modding que absorvem parte das mudanças internas do jogo;
-- transporte/sincronização quando adequado.
+**Papel**
 
-## Baseline inicial
+- framework específico de Valheim;
+- adaptação de plumbing recorrente da API do jogo;
+- utilitários/versionamento do jogo;
+- serviços de integração que podem reduzir quebra após updates.
 
-A combinação exata suportada será registrada em uma matriz de compatibilidade assim que existir build executável. Até lá:
+**Por que permanece dependência**
 
-- BepInEx 5.x/LTS para Valheim é a direção arquitetural;
-- Jötunn 2.x é a direção arquitetural;
-- nenhuma versão será atualizada automaticamente.
+Valheim não oferece uma API oficial de mods estável. Jötunn concentra parte importante da compatibilidade com mudanças do jogo.
 
-## Processo de atualização
+**Limite**
 
-Nova versão de Valheim, BepInEx ou Jötunn deve gerar avaliação explícita:
+O Majo não deve delegar a Jötunn:
 
-1. ler changelog/diff relevante;
-2. comparar APIs consumidas por `Majo.Platform`;
-3. build;
-4. testes focados;
-5. dedicated server;
-6. cliente;
-7. multiplayer;
-8. regressões de config/RPC/persistência;
-9. performance quando hot paths forem afetados;
-10. promover somente após evidência.
+- autorização privilegiada;
+- modelo de configuração do produto;
+- domínio de gameplay;
+- persistência própria;
+- decisões de compatibilidade do produto.
 
-## Regra de isolamento
+Esses contratos pertencem ao Majo.
 
-Módulos devem depender de interfaces próprias quando isso protege o domínio de alterações externas.
+## Baseline MAJO-001
 
-Exemplo desejado:
+Combinação candidata revalidada em 2026-09-18:
 
-```text
-Building → IPieceRegistry → JotunnAdapter → Jötunn
-```
+| Componente | Versão | Papel |
+| --- | --- | --- |
+| Valheim | 1.0.15 | jogo/runtime alvo |
+| BepInExPack_Valheim | 5.4.2350 | distribuição Valheim do loader |
+| BepInEx | 5.4.23.5 | framework/loader efetivo |
+| Jötunn | 2.30.1 | framework Valheim |
+| JotunnLib | 2.30.1 | referência de build |
+| Microsoft.NETFramework.ReferenceAssemblies.net462 | 1.0.3 | build-only, PrivateAssets=All |
 
-Evitar espalhar `PieceManager.Instance`, `PrefabManager.Instance` e equivalentes por módulos sem necessidade.
+A tabela não significa auto-update. Promoção depende dos gates da tarefa e futura matriz de compatibilidade.
 
-## Nova dependência
+O artefato Linux x64 de BepInEx 5.4.23.5 usado pelo CI possui SHA-256 oficial:
 
-Qualquer proposta de nova dependência de runtime deve responder:
+`e538560be65739f562519ab518a75f9c65b3f57f87457403ae7cde683c12dab7`
 
-- por que BepInEx/Jötunn/.NET/Valheim não bastam;
-- qual custo de atualização ela adiciona;
-- qual superfície de supply chain cria;
-- se pode ser isolada;
-- plano de substituição/rollback.
+## O que não adicionar por padrão
 
-Sem decisão versionada, a dependência não entra.
+- ServerSync;
+- DI framework;
+- logging framework;
+- networking library;
+- UI framework externo;
+- Newtonsoft adicional;
+- mods funcionais;
+- bibliotecas apenas por conveniência.
 
+## Supply chain
 
-## Supply chain e promoção
+- versões promovidas manualmente;
+- origem oficial/upstream;
+- hash de artefato quando aplicável;
+- nada de auto-download/update em runtime;
+- DLLs proprietárias do Valheim não entram no Git;
+- falha de compatibilidade deve ser observável.
 
-Framework aprovado não significa versão automaticamente confiável.
+## Referências funcionais
 
-Toda promoção de BepInEx/Jötunn para uma versão suportada deve registrar, quando houver artefato distribuído:
-
-- versão exata;
-- origem oficial usada;
-- commit/tag upstream correspondente quando disponível;
-- SHA-256 do artefato efetivamente testado;
-- data da validação;
-- combinação Valheim/BepInEx/Jötunn;
-- resultado dos gates.
-
-O Majo não deve baixar ou atualizar frameworks automaticamente em runtime.
-
-Pacotes obtidos de mirrors/reuploads não entram na matriz oficial sem validação explícita contra a origem escolhida.
+Projetos em `docs/REFERENCE-PROJECTS.md` são referências de comportamento/arquitetura e não dependências do produto.

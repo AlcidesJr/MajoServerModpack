@@ -58,11 +58,17 @@ Um patch visual pode alterar `MajoVersion` sem alterar `ProtocolVersion`.
 
 BepInEx/Jötunn são versões promovidas e testadas, nunca auto-updated pelo Majo.
 
-Quando houver build executável, manter matriz:
+Matriz em construção:
 
 | Majo | Valheim | BepInEx | Jötunn | Estado |
 | --- | --- | --- | --- | --- |
-| pending | pending | pending | pending | ainda não validado |
+| 0.0.1 | 1.0.15 | 5.4.23.5 (BepInExPack 5.4.2350) | 2.30.1 | candidata — build/smoke pendentes |
+
+A promoção para suportada exige evidência correspondente; build isolado não equivale a smoke dentro do Valheim.
+
+## Contexto de execução
+
+A MAJO-001 diferencia dedicated, listen host, client, local world e menu/pre-world quando o runtime oferece sinal verificável. Falta de sinal degrada para estado conservador e observável, nunca para uma inferência de autoridade.
 
 ## Falha segura
 
