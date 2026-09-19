@@ -23,8 +23,10 @@ internal static class Program
         Run("Input global context", TestInputGlobalContext);
         Run("Input shared binding", TestInputSharedBinding);
         Run("Patch owner ambiguity", TestPatchOwnerAmbiguity);
+        Run("Patch surface normalization", TestPatchSurfaceNormalization);
         Run("Patch consumers", TestPatchConsumers);
         Run("Runtime metadata", TestRuntimeMetadata);
+        Run("Runtime rejects bootstrap after shutdown", TestBootstrapAfterShutdown);
 
         Console.WriteLine(_failed == 0
             ? "Majo core tests: PASS"
@@ -161,6 +163,17 @@ internal static class Program
         AssertThrows<InvalidOperationException>(() => patches.RegisterOwner("ZNet.Awake", "other"));
     }
 
+    private static void TestPatchSurfaceNormalization()
+    {
+        var patches = new PatchCoordinator();
+        patches.RegisterOwner("ZNet.Awake", "core.runtime");
+        patches.RegisterOwner(" ZNet.Awake ", " core.runtime ");
+
+        Assert(patches.Count == 1, "surface whitespace must not create a second registry entry");
+        AssertThrows<InvalidOperationException>(
+            () => patches.RegisterOwner(" ZNet.Awake ", "other"));
+    }
+
     private static void TestPatchConsumers()
     {
         var patches = new PatchCoordinator();
@@ -175,7 +188,28 @@ internal static class Program
 
     private static void TestRuntimeMetadata()
     {
-        var metadata = new RuntimeMetadata(
+        var metadata = CreateRuntimeMetadata();
+        Assert(metadata.MajoVersion == "0.0.1", "runtime must start at 0.0.1");
+        Assert(metadata.ProtocolVersion == 0, "protocol must remain unimplemented");
+        Assert(metadata.ConfigSchema == 0, "config schema must remain unimplemented");
+        Assert(metadata.DataSchema == 0, "data schema must remain unimplemented");
+    }
+
+    private static void TestBootstrapAfterShutdown()
+    {
+        var runtime = new MajoRuntime(
+            new TestLogger(),
+            new TestExecutionContextProvider(),
+            CreateRuntimeMetadata());
+
+        runtime.Shutdown();
+
+        AssertThrows<InvalidOperationException>(() => runtime.Bootstrap());
+    }
+
+    private static RuntimeMetadata CreateRuntimeMetadata()
+    {
+        return new RuntimeMetadata(
             MajoVersions.MajoVersion,
             MajoVersions.ProtocolVersion,
             MajoVersions.ConfigSchema,
@@ -183,11 +217,6 @@ internal static class Program
             "1.0.15",
             "5.4.23.5",
             "2.30.1.0");
-
-        Assert(metadata.MajoVersion == "0.0.1", "runtime must start at 0.0.1");
-        Assert(metadata.ProtocolVersion == 0, "protocol must remain unimplemented");
-        Assert(metadata.ConfigSchema == 0, "config schema must remain unimplemented");
-        Assert(metadata.DataSchema == 0, "data schema must remain unimplemented");
     }
 
     private static ModuleRegistry Registry()
@@ -262,6 +291,14 @@ internal static class Program
         {
             Assert(actual[index] == expected[index],
                 "sequence mismatch at " + index + ": " + actual[index] + " != " + expected[index]);
+        }
+    }
+
+    private sealed class TestExecutionContextProvider : IExecutionContextProvider
+    {
+        public ExecutionContextSnapshot Detect()
+        {
+            return new ExecutionContextSnapshot(ExecutionContextKind.MenuOrPreWorld, "test");
         }
     }
 
