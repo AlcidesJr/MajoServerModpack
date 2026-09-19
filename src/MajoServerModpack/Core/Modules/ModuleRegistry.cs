@@ -93,6 +93,12 @@ namespace MajoServerModpack.Core.Modules
             foreach (var moduleId in order)
             {
                 var entry = _entries[moduleId];
+                if (entry.State != ModuleLifecycleState.Registered)
+                {
+                    throw new InvalidOperationException(
+                        "Module '" + moduleId + "' cannot be initialized from state " + entry.State + ".");
+                }
+
                 if (HasFailedDependency(entry.Module.Descriptor, ModuleLifecycleState.Initialized))
                 {
                     Fail(entry, "Dependency failed before initialization.", null);
