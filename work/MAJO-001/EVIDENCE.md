@@ -145,3 +145,14 @@ SECURITY_REVIEW: PASS.
 - Mudança de runtime: none.
 - BLOCKED_BY: none.
 - DEFERRED_GATE: none — smoke não foi declarado como gate satisfeito nem como gate de aceite da tarefa.
+
+### Integração da consistência da baseline
+
+- PR #9: MERGED.
+- Final metadata HEAD: `543fb078df266c76b4a09fc2d844ee734b9ab45b`.
+- Merge SHA: `9160dee10c4b9b081bdbda303ef792987c275e4c`.
+- CI final do PR #9: push run 35452957728 PASS; PR run 35452960161 PASS.
+- Codex review do CONTENT_HEAD `3a10130d0f`: PASS, sem novos findings.
+- Threads abertas nos PRs #5–#9: 0 após resolução.
+- Issue #4: closed/completed.
+- Resultado: DONE.

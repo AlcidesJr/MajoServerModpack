@@ -95,3 +95,12 @@ A MAJO-001 possui REVIEW e SECURITY_REVIEW em PASS e está canonicamente DONE.
 - Correção: documentação passa a distinguir baseline candidata com build PASS de suporte runtime ainda não promovido.
 - CONTENT_HEAD documental: `3a10130d0f2e19bc203f1026830c34a4a5e89047`.
 - Estado: VERIFYING.
+
+### Conclusão da consistência da baseline
+
+- PR #9: MERGED em `9160dee10c4b9b081bdbda303ef792987c275e4c`.
+- CONTENT_HEAD documental `3a10130d0f2e19bc203f1026830c34a4a5e89047`: Codex review PASS, sem novos findings.
+- Metadata HEAD `543fb078df266c76b4a09fc2d844ee734b9ab45b`: CI PASS.
+- Threads do PR #9: 0 abertas.
+- SECURITY_REVIEW: N/A para a correção exclusivamente documental; nenhuma superfície de runtime/segurança foi alterada.
+- Estado final: DONE.
