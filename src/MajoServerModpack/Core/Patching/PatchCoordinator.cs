@@ -33,8 +33,8 @@ namespace MajoServerModpack.Core.Patching
 
         public void RegisterOwner(string surfaceId, string ownerModuleId)
         {
-            ValidateToken(surfaceId, nameof(surfaceId));
-            ValidateToken(ownerModuleId, nameof(ownerModuleId));
+            surfaceId = NormalizeToken(surfaceId, nameof(surfaceId));
+            ownerModuleId = NormalizeToken(ownerModuleId, nameof(ownerModuleId));
 
             Entry entry;
             if (!_entries.TryGetValue(surfaceId, out entry))
@@ -55,8 +55,8 @@ namespace MajoServerModpack.Core.Patching
 
         public void RegisterConsumer(string surfaceId, string consumerModuleId)
         {
-            ValidateToken(surfaceId, nameof(surfaceId));
-            ValidateToken(consumerModuleId, nameof(consumerModuleId));
+            surfaceId = NormalizeToken(surfaceId, nameof(surfaceId));
+            consumerModuleId = NormalizeToken(consumerModuleId, nameof(consumerModuleId));
 
             Entry entry;
             if (!_entries.TryGetValue(surfaceId, out entry))
@@ -88,12 +88,14 @@ namespace MajoServerModpack.Core.Patching
             return new ReadOnlyCollection<PatchSurfaceSnapshot>(result);
         }
 
-        private static void ValidateToken(string value, string parameter)
+        private static string NormalizeToken(string value, string parameter)
         {
             if (string.IsNullOrWhiteSpace(value))
             {
                 throw new ArgumentException("Value is required.", parameter);
             }
+
+            return value.Trim();
         }
     }
 }
