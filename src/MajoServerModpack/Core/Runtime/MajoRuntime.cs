@@ -37,6 +37,11 @@ namespace MajoServerModpack.Core.Runtime
 
         public DiagnosticsSnapshot Bootstrap()
         {
+            if (_shutdown)
+            {
+                throw new InvalidOperationException("Majo runtime is already shut down.");
+            }
+
             if (_bootstrapped)
             {
                 throw new InvalidOperationException("Majo runtime is already bootstrapped.");
