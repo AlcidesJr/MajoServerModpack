@@ -30,7 +30,8 @@ MAJO-001 concluída, com estado final proposto neste closeout e efetivo somente 
 - threads abertas nos PRs #5, #6 e #7: 0;
 - issue #4: será encerrada automaticamente pelo merge do closeout;
 - closeout final: PR #8;
-- próximo gate: CI/review do PR #8 e merge.
+- CI do closeout no HEAD `a5346a3e3052a9afb673250c32781a3addd18f64`: push run 35451638958 PASS; PR run 35451641640 PASS;
+- após o merge, o PR #8 é o registro canônico do merge commit atribuído pelo GitHub; não há gate posterior pendente.
 
 ## Baseline promovida
 

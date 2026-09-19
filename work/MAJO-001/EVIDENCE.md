@@ -119,10 +119,13 @@ SECURITY_REVIEW: PASS.
 
 - Branch: `task/MAJO-001-final-closeout`.
 - Closeout PR: #8.
+- Closeout HEAD validado: `a5346a3e3052a9afb673250c32781a3addd18f64`.
+- Closeout push run 35451638958: PASS.
+- Closeout PR run 35451641640: PASS.
 - STATUS final proposto: DONE.
 - BOARD final proposto: DONE.
 - Issue #4: será encerrada automaticamente quando o closeout for integrado.
 - BLOCKED_BY: none.
 - DEFERRED_GATE: none.
 
-Após o merge do closeout, `main` passa a conter o fechamento canônico da MAJO-001 em DONE.
+Após o merge do closeout, `main` passa a conter o fechamento canônico da MAJO-001 em DONE; o merge commit atribuído pelo GitHub fica registrado no PR #8.
