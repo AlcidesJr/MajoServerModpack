@@ -96,5 +96,13 @@ SECURITY_REVIEW: PASS.
 - `git diff --check`: PASS.
 - Push run 35450718574: governance, core tests, runtime build e artifact validation PASS.
 - PR run 35450722406: governance, core tests, runtime build e artifact validation PASS.
-- Rereview: pending.
-- SECURITY_REVIEW: pending.
+- Rereview Codex do HEAD `944c7001068fd1f18730f98ff1b0c3e897e75ced`: PASS, sem findings.
+- SECURITY_REVIEW: PASS.
+- Threads abertas nos PRs #5, #6 e #7: 0.
+
+### Segurança da remediação
+
+- Mudança restrita à leitura reflectiva de um campo booleano já existente na instância `ZNet`.
+- O execution context continua sendo diagnóstico e não concede autoridade.
+- Nenhum RPC, permissão, filesystem, processo, download em runtime, secret ou patch funcional foi adicionado.
+- Supply chain, versões e validações de artefato permanecem inalteradas.
