@@ -55,7 +55,7 @@ PASS.
 
 ## Conclusão
 
-A MAJO-001 está READY_TO_MERGE após a remediação descrita abaixo.
+A MAJO-001 possui REVIEW e SECURITY_REVIEW em PASS. O PR #7 foi integrado; o estado DONE final é proposto pelo closeout PR #8 e torna-se canônico somente no merge desse PR.
 
 ## Reabertura por review tardio — 2026-09-19
 
@@ -69,3 +69,20 @@ A MAJO-001 está READY_TO_MERGE após a remediação descrita abaixo.
 - Threads abertas nos PRs #5, #6 e #7: 0.
 - SECURITY_REVIEW: PASS — a mudança não amplia autoridade, entrada não confiável, filesystem, rede, processos, secrets ou supply chain.
 - Estado: READY_TO_MERGE.
+
+## Integração da remediação
+
+- PR #7: MERGED.
+- HEAD final: `75e2ec99fd318ea4ac7636d3aeb5b5735e218a31`.
+- Merge SHA: `cc7b273264c393473918b61b14f95aacde3725ff`.
+- Main pós-merge run 35451415347: PASS.
+- Findings abertos: 0.
+- SECURITY_REVIEW: PASS.
+
+## Closeout final
+
+- PR #8: closeout documental, sem mudança de runtime.
+- HEAD validado: `a5346a3e3052a9afb673250c32781a3addd18f64`.
+- Push run 35451638958: PASS.
+- PR run 35451641640: PASS.
+- Conclusão final proposta: DONE, efetiva no merge do PR #8.

@@ -56,7 +56,7 @@ A MAJO-000 encerrou a fundação arquitetural e de governança. A MAJO-001 trans
 - [x] Build reproduzível do plugin passa no ambiente definido.
 - [x] CI aplicável passa no HEAD revisado da remediação.
 - [x] Review independente e security review concluídos no HEAD da remediação.
-- [ ] PR de remediação integrado, merge SHA registrado e novo closeout concluído.
+- [x] PR de remediação integrado, merge SHA registrado e novo closeout concluído após a integração deste PR.
 
 ## Dependências
 

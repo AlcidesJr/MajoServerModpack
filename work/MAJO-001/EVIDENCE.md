@@ -106,3 +106,26 @@ SECURITY_REVIEW: PASS.
 - O execution context continua sendo diagnóstico e não concede autoridade.
 - Nenhum RPC, permissão, filesystem, processo, download em runtime, secret ou patch funcional foi adicionado.
 - Supply chain, versões e validações de artefato permanecem inalteradas.
+
+## Integração da remediação
+
+- Remediation PR: #7.
+- Remediation HEAD final: `75e2ec99fd318ea4ac7636d3aeb5b5735e218a31`.
+- Remediation merge SHA: `cc7b273264c393473918b61b14f95aacde3725ff`.
+- Main pós-merge run 35451415347: governance, core tests, runtime build e artifact validation PASS.
+- Resultado: MERGED.
+
+## Closeout final proposto
+
+- Branch: `task/MAJO-001-final-closeout`.
+- Closeout PR: #8.
+- Closeout HEAD validado: `a5346a3e3052a9afb673250c32781a3addd18f64`.
+- Closeout push run 35451638958: PASS.
+- Closeout PR run 35451641640: PASS.
+- STATUS final proposto: DONE.
+- BOARD final proposto: DONE.
+- Issue #4: será encerrada automaticamente quando o closeout for integrado.
+- BLOCKED_BY: none.
+- DEFERRED_GATE: none.
+
+Após o merge do closeout, `main` passa a conter o fechamento canônico da MAJO-001 em DONE; o merge commit atribuído pelo GitHub fica registrado no PR #8.
