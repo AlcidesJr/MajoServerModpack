@@ -1,7 +1,7 @@
 # STATUS — MAJO-001
 
 TASK: MAJO-001
-STATE: DONE (proposto; efetivo no merge do closeout)
+STATE: DONE
 BRANCH: task/MAJO-001-final-closeout
 BASE_HEAD: 3a5533085258dd86d700df84caa0e411cff20921
 CONTENT_HEAD: 72855d45d413d5bcc9e9b0a9eed7c2acbc43df3e
@@ -10,13 +10,14 @@ ISSUE: #4
 IMPLEMENTATION_MERGE_SHA: 31275f2a24679030fb2110f0eeea756eee51d159
 REMEDIATION_MERGE_SHA: cc7b273264c393473918b61b14f95aacde3725ff
 CLOSEOUT_PR: #8
+CLOSEOUT_MERGE_SHA: 36ab695506dd746e21cf1976f5ef56590782bbd2
 BLOCKED_BY: none
 DEFERRED_GATE: none
 SECURITY: PASS
 
 ## Resultado
 
-MAJO-001 concluída, com estado final proposto neste closeout e efetivo somente após seu merge.
+MAJO-001 concluída.
 
 - finding tardio corrigido no CONTENT_HEAD: leitura de `ZNet.m_openServer` usa o campo de instância e o objeto `ZNet` atual;
 - implementação anterior integrada via PR #5, merge SHA `31275f2a24679030fb2110f0eeea756eee51d159`;
@@ -28,10 +29,10 @@ MAJO-001 concluída, com estado final proposto neste closeout e efetivo somente 
 - Codex rereview do HEAD `944c7001068fd1f18730f98ff1b0c3e897e75ced`: PASS, sem findings;
 - SECURITY_REVIEW da remediação: PASS;
 - threads abertas nos PRs #5, #6 e #7: 0;
-- issue #4: será encerrada automaticamente pelo merge do closeout;
-- closeout final: PR #8;
+- issue #4: closed/completed;
+- closeout final integrado via PR #8, merge SHA `36ab695506dd746e21cf1976f5ef56590782bbd2`;
 - CI do closeout no HEAD `a5346a3e3052a9afb673250c32781a3addd18f64`: push run 35451638958 PASS; PR run 35451641640 PASS;
-- após o merge, o PR #8 é o registro canônico do merge commit atribuído pelo GitHub; não há gate posterior pendente.
+- não há gate posterior pendente.
 
 ## Baseline promovida
 

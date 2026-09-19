@@ -55,7 +55,7 @@ PASS.
 
 ## Conclusão
 
-A MAJO-001 possui REVIEW e SECURITY_REVIEW em PASS. O PR #7 foi integrado; o estado DONE final é proposto pelo closeout PR #8 e torna-se canônico somente no merge desse PR.
+A MAJO-001 possui REVIEW e SECURITY_REVIEW em PASS e está canonicamente DONE.
 
 ## Reabertura por review tardio — 2026-09-19
 
@@ -85,4 +85,5 @@ A MAJO-001 possui REVIEW e SECURITY_REVIEW em PASS. O PR #7 foi integrado; o est
 - HEAD validado: `a5346a3e3052a9afb673250c32781a3addd18f64`.
 - Push run 35451638958: PASS.
 - PR run 35451641640: PASS.
-- Conclusão final proposta: DONE, efetiva no merge do PR #8.
+- PR #8: MERGED em `36ab695506dd746e21cf1976f5ef56590782bbd2`.
+- Conclusão final: DONE.

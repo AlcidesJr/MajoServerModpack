@@ -115,17 +115,18 @@ SECURITY_REVIEW: PASS.
 - Main pós-merge run 35451415347: governance, core tests, runtime build e artifact validation PASS.
 - Resultado: MERGED.
 
-## Closeout final proposto
+## Closeout final
 
 - Branch: `task/MAJO-001-final-closeout`.
 - Closeout PR: #8.
 - Closeout HEAD validado: `a5346a3e3052a9afb673250c32781a3addd18f64`.
 - Closeout push run 35451638958: PASS.
 - Closeout PR run 35451641640: PASS.
-- STATUS final proposto: DONE.
-- BOARD final proposto: DONE.
-- Issue #4: será encerrada automaticamente quando o closeout for integrado.
+- Closeout merge SHA: `36ab695506dd746e21cf1976f5ef56590782bbd2`.
+- STATUS final: DONE.
+- BOARD final: DONE.
+- Issue #4: closed/completed.
 - BLOCKED_BY: none.
 - DEFERRED_GATE: none.
 
-Após o merge do closeout, `main` passa a conter o fechamento canônico da MAJO-001 em DONE; o merge commit atribuído pelo GitHub fica registrado no PR #8.
+`main` contém o fechamento canônico da MAJO-001 em DONE.
