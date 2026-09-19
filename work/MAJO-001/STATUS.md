@@ -9,7 +9,7 @@ PR: #5 / #7
 ISSUE: #4
 IMPLEMENTATION_MERGE_SHA: 31275f2a24679030fb2110f0eeea756eee51d159
 REMEDIATION_MERGE_SHA: cc7b273264c393473918b61b14f95aacde3725ff
-CLOSEOUT_PR: pending
+CLOSEOUT_PR: #8
 BLOCKED_BY: none
 DEFERRED_GATE: none
 SECURITY: PASS
@@ -18,7 +18,6 @@ SECURITY: PASS
 
 MAJO-001 concluída, com estado final proposto neste closeout e efetivo somente após seu merge.
 
-- implementação integrada via PR #5;
 - finding tardio corrigido no CONTENT_HEAD: leitura de `ZNet.m_openServer` usa o campo de instância e o objeto `ZNet` atual;
 - implementação anterior integrada via PR #5, merge SHA `31275f2a24679030fb2110f0eeea756eee51d159`;
 - closeout anterior integrado via PR #6, merge SHA `52a479b45207b8ead0c764bb5cf977439b4134d2`;
@@ -30,7 +29,8 @@ MAJO-001 concluída, com estado final proposto neste closeout e efetivo somente 
 - SECURITY_REVIEW da remediação: PASS;
 - threads abertas nos PRs #5, #6 e #7: 0;
 - issue #4: será encerrada automaticamente pelo merge do closeout;
-- próximo gate: criar, revisar e integrar o PR de closeout.
+- closeout final: PR #8;
+- próximo gate: CI/review do PR #8 e merge.
 
 ## Baseline promovida
 

@@ -118,7 +118,7 @@ SECURITY_REVIEW: PASS.
 ## Closeout final proposto
 
 - Branch: `task/MAJO-001-final-closeout`.
-- Closeout PR: pending.
+- Closeout PR: #8.
 - STATUS final proposto: DONE.
 - BOARD final proposto: DONE.
 - Issue #4: será encerrada automaticamente quando o closeout for integrado.
