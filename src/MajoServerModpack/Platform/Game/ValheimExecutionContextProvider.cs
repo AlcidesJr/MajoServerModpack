@@ -10,7 +10,7 @@ namespace MajoServerModpack.Platform.Game
     internal sealed class ValheimExecutionContextProvider : IExecutionContextProvider
     {
         private static readonly FieldInfo OpenServerField =
-            typeof(ZNet).GetField("m_openServer", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+            typeof(ZNet).GetField("m_openServer", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
         private readonly IMajoLogger _logger;
         private bool _reportedMissingListenSignal;
@@ -54,7 +54,7 @@ namespace MajoServerModpack.Platform.Game
             if (znet.IsLocalInstance())
             {
                 bool openServer;
-                if (TryReadOpenServer(out openServer))
+                if (TryReadOpenServer(znet, out openServer))
                 {
                     return new ExecutionContextSnapshot(
                         openServer ? ExecutionContextKind.ListenServer : ExecutionContextKind.LocalWorld,
@@ -77,7 +77,7 @@ namespace MajoServerModpack.Platform.Game
             return new ExecutionContextSnapshot(ExecutionContextKind.Unknown, "unrecognized ZNet state");
         }
 
-        private static bool TryReadOpenServer(out bool openServer)
+        private static bool TryReadOpenServer(ZNet znet, out bool openServer)
         {
             openServer = false;
             if (OpenServerField == null || OpenServerField.FieldType != typeof(bool))
@@ -87,7 +87,7 @@ namespace MajoServerModpack.Platform.Game
 
             try
             {
-                openServer = (bool)OpenServerField.GetValue(null);
+                openServer = (bool)OpenServerField.GetValue(znet);
                 return true;
             }
             catch
