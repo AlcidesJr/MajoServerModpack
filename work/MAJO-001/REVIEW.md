@@ -69,3 +69,12 @@ A MAJO-001 está READY_TO_MERGE após a remediação descrita abaixo.
 - Threads abertas nos PRs #5, #6 e #7: 0.
 - SECURITY_REVIEW: PASS — a mudança não amplia autoridade, entrada não confiável, filesystem, rede, processos, secrets ou supply chain.
 - Estado: READY_TO_MERGE.
+
+## Integração da remediação
+
+- PR #7: MERGED.
+- HEAD final: `75e2ec99fd318ea4ac7636d3aeb5b5735e218a31`.
+- Merge SHA: `cc7b273264c393473918b61b14f95aacde3725ff`.
+- Main pós-merge run 35451415347: PASS.
+- Findings abertos: 0.
+- SECURITY_REVIEW: PASS.
