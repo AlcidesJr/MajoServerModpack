@@ -140,7 +140,7 @@ SECURITY_REVIEW: PASS.
 - Correção: manter a combinação como candidata e distinguir explicitamente build PASS de smoke runtime.
 - Issue #4: reaberta.
 - Branch: `task/MAJO-001-baseline-consistency`.
-- PR: pending.
+- PR: #9.
 - Mudança de runtime: none.
 - BLOCKED_BY: none.
 - DEFERRED_GATE: none — smoke não foi declarado como gate satisfeito nem como gate de aceite da tarefa.
