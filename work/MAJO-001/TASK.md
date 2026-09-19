@@ -54,18 +54,18 @@ A MAJO-000 encerrou a fundação arquitetural e de governança. A MAJO-001 trans
 - [x] Build não versiona DLLs proprietárias do Valheim.
 - [x] Testes focados passam.
 - [x] Build reproduzível do plugin passa no ambiente definido.
-- [x] CI aplicável passa no HEAD revisado.
-- [x] Review independente e security review concluídos.
-- [x] PR de implementação integrado, merge SHA registrado e closeout concluído.
+- [x] CI aplicável passa no HEAD revisado da remediação.
+- [x] Review independente e security review concluídos no HEAD da remediação.
+- [ ] PR de remediação integrado, merge SHA registrado e novo closeout concluído.
 
 ## Dependências
 
 - DEPENDS_ON: MAJO-000 — DONE
 - Plataforma: BepInEx + Jötunn
 
-## Baseline candidata de plataforma
+## Baseline promovida de plataforma
 
-Validada documentalmente em 2026-09-18, ainda sujeita aos gates de build/runtime desta tarefa:
+Promovida após os gates de build/runtime da tarefa:
 
 - Valheim: `1.0.15`;
 - BepInExPack_Valheim: `5.4.2350`;
@@ -73,7 +73,7 @@ Validada documentalmente em 2026-09-18, ainda sujeita aos gates de build/runtime
 - Jötunn: `2.30.1`;
 - target framework do plugin: `net462`, alinhado ao Jötunn 2.30.1.
 
-A baseline só será promovida como combinação suportada após os gates aplicáveis. Nenhuma atualização é automática.
+A combinação acima é a baseline suportada pela MAJO-001. Nenhuma atualização é automática.
 
 ## Riscos conhecidos
 

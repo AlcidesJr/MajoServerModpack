@@ -75,3 +75,34 @@ SECURITY_REVIEW: PASS.
 - BOARD.md: DONE
 - TASK acceptance: completo
 - Pendências: none
+
+## Reabertura por review tardio — 2026-09-19
+
+- O review automático publicou, após os merges dos PRs #5 e #6, um P2 aberto em `ValheimExecutionContextProvider`.
+- Problema: `ZNet.m_openServer` é campo de instância, mas era buscado com `BindingFlags.Static` e lido com alvo nulo.
+- Issue #4: reaberta para remediação explícita.
+- Branch: `task/MAJO-001-late-review-remediation`.
+- Remediation PR: #7.
+- Escopo: corrigir somente o finding, repetir CI/review/security e refazer o closeout.
+- BLOCKED_BY: none.
+- DEFERRED_GATE: none.
+
+### Correção
+
+- CONTENT_HEAD: `72855d45d413d5bcc9e9b0a9eed7c2acbc43df3e`.
+- `m_openServer` é buscado com `BindingFlags.Instance` e lido a partir da instância `ZNet` atual.
+- `python tools/validate_foundation.py`: PASS.
+- `dotnet run --project tests/MajoServerModpack.Core.Tests/MajoServerModpack.Core.Tests.csproj -c Release`: PASS, 16 cenários.
+- `git diff --check`: PASS.
+- Push run 35450718574: governance, core tests, runtime build e artifact validation PASS.
+- PR run 35450722406: governance, core tests, runtime build e artifact validation PASS.
+- Rereview Codex do HEAD `944c7001068fd1f18730f98ff1b0c3e897e75ced`: PASS, sem findings.
+- SECURITY_REVIEW: PASS.
+- Threads abertas nos PRs #5, #6 e #7: 0.
+
+### Segurança da remediação
+
+- Mudança restrita à leitura reflectiva de um campo booleano já existente na instância `ZNet`.
+- O execution context continua sendo diagnóstico e não concede autoridade.
+- Nenhum RPC, permissão, filesystem, processo, download em runtime, secret ou patch funcional foi adicionado.
+- Supply chain, versões e validações de artefato permanecem inalteradas.

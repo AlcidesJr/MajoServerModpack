@@ -1,11 +1,11 @@
 # STATUS — MAJO-001
 
 TASK: MAJO-001
-STATE: DONE
-BRANCH: task/MAJO-001-core-runtime
+STATE: READY_TO_MERGE
+BRANCH: task/MAJO-001-late-review-remediation
 BASE_HEAD: 3a5533085258dd86d700df84caa0e411cff20921
-CONTENT_HEAD: 0d4c6f0c4cfd87d3c900d85f781f5270308131c0
-PR: #5
+CONTENT_HEAD: 72855d45d413d5bcc9e9b0a9eed7c2acbc43df3e
+PR: #7
 ISSUE: #4
 IMPLEMENTATION_MERGE_SHA: 31275f2a24679030fb2110f0eeea756eee51d159
 BLOCKED_BY: none
@@ -14,15 +14,19 @@ SECURITY: PASS
 
 ## Resultado
 
-MAJO-001 concluída.
+MAJO-001 reaberta explicitamente após um finding P2 tardio, publicado pelo review automático depois dos merges dos PRs #5 e #6.
 
 - implementação integrada via PR #5;
-- implementation merge SHA: `31275f2a24679030fb2110f0eeea756eee51d159`;
-- governance/core tests/runtime build/artifact validation: PASS;
-- Codex rereview final: PASS;
-- security review: PASS;
-- threads abertas: 0;
-- issue #4: closed/completed.
+- finding corrigido no CONTENT_HEAD: leitura de `ZNet.m_openServer` agora usa o campo de instância e o objeto `ZNet` atual;
+- implementação anterior integrada via PR #5, merge SHA `31275f2a24679030fb2110f0eeea756eee51d159`;
+- closeout anterior integrado via PR #6, merge SHA `52a479b45207b8ead0c764bb5cf977439b4134d2`;
+- issue #4: reaberta;
+- validação local: governance PASS, testes puros PASS, `git diff --check` PASS;
+- CI do PR #7: push run 35450718574 PASS; PR run 35450722406 PASS;
+- Codex rereview do HEAD `944c7001068fd1f18730f98ff1b0c3e897e75ced`: PASS, sem findings;
+- SECURITY_REVIEW da remediação: PASS;
+- threads abertas nos PRs #5, #6 e #7: 0;
+- próximo gate: merge do PR #7 e novo closeout.
 
 ## Baseline promovida
 
@@ -33,6 +37,6 @@ MAJO-001 concluída.
 - Jötunn `2.30.1`;
 - target `net462`.
 
-## Próxima frente
+## Limite de escopo
 
-MAJO-002 — Authority and secure networking.
+Nenhuma implementação da MAJO-002 ou tarefa futura faz parte desta remediação.

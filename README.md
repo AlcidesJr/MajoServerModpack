@@ -4,9 +4,9 @@ Mod independente, modular e extensível para Valheim.
 
 ## Estado
 
-As fundações de arquitetura/governança (`MAJO-000`) e o primeiro core runtime (`MAJO-001`) estão concluídos.
+As fundações de arquitetura/governança (`MAJO-000`) estão concluídas. O primeiro core runtime (`MAJO-001`) está em remediação de um finding tardio de review.
 
-Próxima frente planejada:
+Próxima frente planejada, ainda não iniciada:
 
 - `MAJO-002 — Authority and secure networking`
 
