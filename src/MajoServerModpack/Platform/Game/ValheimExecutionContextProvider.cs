@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
-using Jotunn;\nusing Jotunn.Managers;
+using Jotunn;
+using Jotunn.Managers;
 using MajoServerModpack.Core.Logging;
 using MajoServerModpack.Core.Runtime;
 
