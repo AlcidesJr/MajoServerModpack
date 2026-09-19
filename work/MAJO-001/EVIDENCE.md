@@ -67,7 +67,7 @@ SECURITY_REVIEW: PASS.
 - Implementation PR: #5
 - Implementation merge SHA: `31275f2a24679030fb2110f0eeea756eee51d159`
 - Issue #4: closed/completed
-- Closeout PR: pending
+- Closeout PR: #6
 
 ## Fechamento
 
