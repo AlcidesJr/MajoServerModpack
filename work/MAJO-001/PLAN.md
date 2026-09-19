@@ -265,3 +265,17 @@ Plano restrito:
 5. integrar a remediação e produzir novo closeout auditável.
 
 Rollback: reverter o PR de remediação restaura o comportamento anterior. Não há migration, persistência ou mudança de protocolo.
+
+## Correção de consistência da baseline — 2026-09-19
+
+Um review tardio identificou que README/TASK/STATUS/EVIDENCE promoviam a combinação Valheim/BepInEx/Jötunn como suportada, embora `docs/COMPATIBILITY.md` e `docs/BUILD.md` exijam smoke dentro do Valheim e esse smoke esteja NOT_RUN.
+
+Plano restrito:
+
+1. manter a combinação como baseline candidata;
+2. registrar separadamente build real PASS e runtime smoke NOT_RUN;
+3. sincronizar README, COMPATIBILITY, TASK, STATUS, EVIDENCE, REVIEW e BOARD;
+4. executar governance, testes, build real e review documental;
+5. integrar a correção sem alterar runtime ou escopo MAJO-002+.
+
+Riscos: reduzir indevidamente a garantia já demonstrada pelo build ou deixar outra fonte com linguagem contraditória. Verificação: busca cruzada pelos termos `promovida`, `suportada`, `candidata` e `smoke`, além do CI integral. Rollback: reverter o PR restaura somente a documentação anterior; não há código, dados, protocolo ou artefato afetado.

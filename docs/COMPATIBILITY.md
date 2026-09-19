@@ -62,7 +62,7 @@ Matriz em construção:
 
 | Majo | Valheim | BepInEx | Jötunn | Estado |
 | --- | --- | --- | --- | --- |
-| 0.0.1 | 1.0.15 | 5.4.23.5 (BepInExPack 5.4.2350) | 2.30.1 | candidata — build/smoke pendentes |
+| 0.0.1 | 1.0.15 | 5.4.23.5 (BepInExPack 5.4.2350) | 2.30.1 | candidata — build PASS; smoke runtime pendente |
 
 A promoção para suportada exige evidência correspondente; build isolado não equivale a smoke dentro do Valheim.
 
