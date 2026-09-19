@@ -42,21 +42,21 @@ A MAJO-000 encerrou a fundação arquitetural e de governança. A MAJO-001 trans
 
 ## Critérios de aceite
 
-- [ ] Plugin BepInEx mínimo compila e possui dependência explícita de Jötunn.
-- [ ] `Majo.Platform` contém somente adapters úteis, sem wrappers vazios.
-- [ ] Runtime central possui bootstrap/start/stop observáveis e falhas seguras.
-- [ ] Contexto de execução é exposto sem ser usado como autorização.
-- [ ] `ModuleRegistry` cobre registro, dependências, lifecycle, duplicidade e isolamento básico de falhas.
-- [ ] `InputRegistry` cobre keyboard/gamepad metadata, contexto, binding atual/default e conflitos.
-- [ ] `PatchCoordinator` impede ownership ambíguo e registra consumidores.
-- [ ] Diagnostics expõem versões, contexto e resumos de módulos/inputs/patches.
-- [ ] `MajoVersion`, `ProtocolVersion`, `ConfigSchema` e `DataSchema` são independentes.
-- [ ] Build não versiona DLLs proprietárias do Valheim.
-- [ ] Testes focados passam.
-- [ ] Build reproduzível do plugin passa no ambiente definido.
-- [ ] CI aplicável passa no HEAD revisado.
-- [ ] Review independente e security review concluídos.
-- [ ] PR de implementação integrado, merge SHA registrado e closeout concluído.
+- [x] Plugin BepInEx mínimo compila e possui dependência explícita de Jötunn.
+- [x] `Majo.Platform` contém somente adapters úteis, sem wrappers vazios.
+- [x] Runtime central possui bootstrap/start/stop observáveis e falhas seguras.
+- [x] Contexto de execução é exposto sem ser usado como autorização.
+- [x] `ModuleRegistry` cobre registro, dependências, lifecycle, duplicidade e isolamento básico de falhas.
+- [x] `InputRegistry` cobre keyboard/gamepad metadata, contexto, binding atual/default e conflitos.
+- [x] `PatchCoordinator` impede ownership ambíguo e registra consumidores.
+- [x] Diagnostics expõem versões, contexto e resumos de módulos/inputs/patches.
+- [x] `MajoVersion`, `ProtocolVersion`, `ConfigSchema` e `DataSchema` são independentes.
+- [x] Build não versiona DLLs proprietárias do Valheim.
+- [x] Testes focados passam.
+- [x] Build reproduzível do plugin passa no ambiente definido.
+- [x] CI aplicável passa no HEAD revisado.
+- [x] Review independente e security review concluídos.
+- [x] PR de implementação integrado, merge SHA registrado e closeout concluído.
 
 ## Dependências
 
