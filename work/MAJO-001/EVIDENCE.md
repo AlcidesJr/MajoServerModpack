@@ -72,6 +72,6 @@ Revisão do diff e superfícies:
 
 ## Fechamento
 
-- STATUS.md: SECURITY_REVIEW
-- BOARD.md: SECURITY_REVIEW
+- STATUS.md: READY_TO_MERGE
+- BOARD.md: READY_TO_MERGE
 - Pendências formalizadas: none

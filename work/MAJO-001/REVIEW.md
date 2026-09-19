@@ -55,4 +55,4 @@ PASS.
 
 ## Conclusão
 
-A MAJO-001 está apta a avançar de SECURITY_REVIEW para READY_TO_MERGE.
+A MAJO-001 está READY_TO_MERGE.

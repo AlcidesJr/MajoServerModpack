@@ -1,7 +1,7 @@
 # STATUS — MAJO-001
 
 TASK: MAJO-001
-STATE: SECURITY_REVIEW
+STATE: READY_TO_MERGE
 BRANCH: task/MAJO-001-core-runtime
 BASE_HEAD: 3a5533085258dd86d700df84caa0e411cff20921
 CONTENT_HEAD: 0d4c6f0c4cfd87d3c900d85f781f5270308131c0
@@ -37,4 +37,4 @@ Não foram introduzidos RPC privilegiado, filesystem arbitrário, runtime update
 
 ## Próximo gate
 
-Registrar READY_TO_MERGE após concluir a transição documental de security review.
+Merge do PR #5 após revalidar CI e mergeability do HEAD metadata final.
