@@ -3,71 +3,75 @@
 ## Intake
 
 - Base HEAD: `3a5533085258dd86d700df84caa0e411cff20921`
-- Task HEAD inicial: `3a5533085258dd86d700df84caa0e411cff20921`
 - Issue: #4
 - Branch: `task/MAJO-001-core-runtime`
 - Dependências: PASS — MAJO-000 = DONE
 - BLOCKED_BY: none
 - DEFERRED_GATE: none
 
-## Revalidação de plataforma — 2026-09-18
+## Baseline promovida pela tarefa
 
-- Valheim oficial: patch `1.0.15` publicado em 2026-09-18.
-- BepInEx upstream: `5.4.23.5`.
-- BepInExPack_Valheim: `5.4.2350`, baseado em BepInEx `5.4.23.5`.
-- Jötunn upstream: `2.30.1`.
-- Jötunn 2.30.x contém a adaptação à linha Valheim 1.0.
-- `JotunnLib` 2.30.1 usa `net462`.
-- Jötunn fornece `GUIManager.IsHeadless()` e `ZNetExtension` para sinais de runtime.
+- Valheim: `1.0.15`
+- Valheim Dedicated Server build ID: `25390671`
+- BepInEx: `5.4.23.5`
+- BepInExPack_Valheim: `5.4.2350`
+- Jötunn: `2.30.1`
+- Target: `net462`
 
-Status: combinação validada pelo build automatizado desta tarefa; promoção canônica será registrada no closeout.
-
-## Planejamento
-
-- PLAN: `work/MAJO-001/PLAN.md`
-- Arquitetura base: `docs/ARCHITECTURE.md`
-- Contratos: `docs/{DEPENDENCIES,COMPATIBILITY,INPUT,PATCH-OWNERSHIP,SECURITY-BASELINE,VERSIONING,WORKFLOW}.md`
-- Issue: #4
+O CI baixa a build corrente via SteamCMD e falha se o appmanifest não corresponder ao build ID aprovado.
 
 ## Implementação
 
-- CONTENT_HEAD: `8780223d7131569acf55a42d76802f3df50b3361`
+- CONTENT_HEAD: `0d4c6f0c4cfd87d3c900d85f781f5270308131c0`
 - Runtime: BepInEx bootstrap + Jötunn hard dependency controlada.
-- Core: ModuleRegistry, lifecycle, InputRegistry, PatchCoordinator, metadata e diagnostics.
+- Core: ModuleRegistry/lifecycle, InputRegistry, PatchCoordinator, metadata e diagnostics.
 - Platform: logging/framework metadata e detecção de contexto Valheim.
+- CI: build real, BepInEx SHA-256 fixado, build ID Valheim validado e retry limitado de SteamCMD.
 - Gameplay/RPC/config funcional: nenhum.
 
 ## Verificação
 
-| Gate | Comando/Run | Resultado |
+| Gate | Evidência | Resultado |
 | --- | --- | --- |
-| Governance | GitHub Actions run 35408340023 / job foundation | PASS |
-| Core tests | GitHub Actions run 35408340023 / job core-tests | PASS |
-| Runtime build | GitHub Actions run 35408340023 / job runtime-build | PASS |
-| Artifact validation | run 35408340023 — somente `MajoServerModpack.dll` no artifact staging | PASS |
-| CI | run 35408340023 @ `8780223d7131569acf55a42d76802f3df50b3361` | PASS |
+| Governance | push run 35448757393 / PR run 35448759291 | PASS |
+| Core tests | runs 35448757393 e 35448759291 | PASS |
+| Runtime build | runs 35448757393 e 35448759291 | PASS |
+| Artifact validation | somente `MajoServerModpack.dll` em staging | PASS |
+| Valheim build pin | build ID `25390671` validado no appmanifest | PASS |
+| Review final | Codex, reviewed commit `0d4c6f0c4c` | PASS |
+| Threads abertas | PR #5 | 0 |
 
-O build provisionou Valheim Dedicated Server, BepInEx 5.4.23.5 com SHA-256 fixado, restaurou Jötunn 2.30.1 e compilou `net462`.
+## Findings tratados
 
-## Review
-
-- Resultado: pending
-- Findings abertos: pending
-- REVIEW.md: `work/MAJO-001/REVIEW.md`
+1. Bootstrap após Shutdown — corrigido em `301cba14f5ef5d9d3234d6b4856baf12b5c88aea`.
+2. Patch surface whitespace — corrigido em `2fcd2263d6d5572b69038699ce05f3718ba697f1`.
+3. Reinicialização de módulos iniciados — corrigido em `5c5cb462c682026f7c65affe07555ec4dcc86349`, regressão em `189ba3a71a6cad27a7bda303a7b2e31c288e2e4e`.
+4. Build Valheim não fixada/verificada — corrigido em `0d4c6f0c4cfd87d3c900d85f781f5270308131c0`.
+5. Instabilidade transitória SteamCMD — retry limitado em `c8065ec4c79b31d28905994919dd34dd20f3ed4a`.
 
 ## Segurança
 
-- Resultado: pending
-- Foco: trust boundary futura preservada, supply chain, logs, ausência de privileged RPC/filesystem/runtime updater.
+SECURITY_REVIEW: PASS.
+
+Revisão do diff e superfícies:
+- sem RPC/autoridade implementados;
+- execution context é diagnóstico, não autorização;
+- sem filesystem arbitrário;
+- sem updater/download em runtime;
+- sem Harmony patch funcional;
+- sem secrets/tokens/passwords no código;
+- dependências externas isoladas e versionadas;
+- BepInEx download de CI validado por SHA-256;
+- Valheim build validada por build ID.
 
 ## Integração
 
 - PR: #5
-- HEAD aprovado: pending
+- HEAD aprovado: `0d4c6f0c4cfd87d3c900d85f781f5270308131c0`
 - Merge SHA: pending
 
 ## Fechamento
 
-- STATUS.md: IN_REVIEW
-- BOARD.md: IN_REVIEW
+- STATUS.md: SECURITY_REVIEW
+- BOARD.md: SECURITY_REVIEW
 - Pendências formalizadas: none

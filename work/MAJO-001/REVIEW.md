@@ -4,41 +4,55 @@
 
 - TASK: `work/MAJO-001/TASK.md`
 - PLAN: `work/MAJO-001/PLAN.md`
-- CONTENT_HEAD: `8780223d7131569acf55a42d76802f3df50b3361`
+- CONTENT_HEAD: `0d4c6f0c4cfd87d3c900d85f781f5270308131c0`
 - Diff: `main...task/MAJO-001-core-runtime`
 
 ## Resultado
 
-REVIEW: pending
+REVIEW: PASS
+SECURITY_REVIEW: PASS
 
-## Evidência pré-review
+## Evidência
 
-- CI run 35408340023: PASS.
-- Governance: PASS.
-- Core tests: PASS.
-- Runtime build: PASS.
-- Artifact validation: PASS.
+- push run 35448757393: PASS;
+- PR run 35448759291: PASS;
+- Codex final: reviewed commit `0d4c6f0c4c`, sem problemas relevantes;
+- review threads abertas: 0.
 
-## Findings abertos
+## Findings tratados
 
-Aguardando revisão independente Codex no PR.
+- P2 — rejeitar Bootstrap após Shutdown;
+- P2 — normalizar patch surfaces antes de ownership;
+- P2 — fixar/verificar build do Valheim no CI;
+- P2 — impedir reinicialização de módulos fora de Registered.
+
+Todos tratados com código/testes/evidência e threads resolvidas.
 
 ## Verificações
 
-- [x] Critérios de implementação cobertos pelo diff e testes focados
-- [x] Compatibilidade/contratos revalidados antes do review
-- [x] Sem expansão para gameplay/MAJO-002+
-- [x] Evidência de CI corresponde ao CONTENT_HEAD
-- [ ] Revisão independente concluída
-- [ ] Findings efetivos tratados
-- [ ] SECURITY_REVIEW concluído após rereview
+- [x] Critérios de aceite cobertos
+- [x] Compatibilidade/contratos revisados
+- [x] Edge cases relevantes avaliados
+- [x] Testes adequados ao risco
+- [x] Sem expansão indevida de escopo
+- [x] Documentação consistente
+- [x] Evidências correspondem ao CONTENT_HEAD
+- [x] Revisão independente concluída
+- [x] Findings efetivos tratados
+- [x] SECURITY_REVIEW concluído após rereview
 
 ## Segurança
 
-Encaminhar para `SECURITY_REVIEW`: sim.
+PASS.
 
-Foco: nenhuma confiança de autorização em execution context, ausência de privileged RPC/filesystem updater, supply chain fixada, logging sem secrets e preservação da futura fronteira MAJO-002.
+- nenhuma ação privilegiada implementada;
+- execution context não concede autoridade;
+- nenhum RPC/admin/filesystem/updater funcional;
+- nenhum segredo registrado;
+- dependências de framework permanecem externas;
+- supply chain do CI fixa BepInEx por SHA-256 e Valheim por build ID;
+- nenhuma feature MAJO-002 foi antecipada.
 
 ## Conclusão
 
-Pendente de revisão independente e security review.
+A MAJO-001 está apta a avançar de SECURITY_REVIEW para READY_TO_MERGE.
