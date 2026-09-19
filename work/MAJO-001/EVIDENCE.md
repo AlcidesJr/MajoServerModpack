@@ -62,7 +62,7 @@ O build provisionou Valheim Dedicated Server, BepInEx 5.4.23.5 com SHA-256 fixad
 
 ## Integração
 
-- PR: pending
+- PR: #5
 - HEAD aprovado: pending
 - Merge SHA: pending
 
