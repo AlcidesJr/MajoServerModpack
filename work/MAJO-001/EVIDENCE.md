@@ -82,6 +82,7 @@ SECURITY_REVIEW: PASS.
 - Problema: `ZNet.m_openServer` é campo de instância, mas era buscado com `BindingFlags.Static` e lido com alvo nulo.
 - Issue #4: reaberta para remediação explícita.
 - Branch: `task/MAJO-001-late-review-remediation`.
+- Remediation PR: #7.
 - Escopo: corrigir somente o finding, repetir CI/review/security e refazer o closeout.
 - BLOCKED_BY: none.
 - DEFERRED_GATE: none.
