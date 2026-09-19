@@ -68,6 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BEPINEX_SHA256: e538560be65739f562519ab518a75f9c65b3f57f87457403ae7cde683c12dab7
+      VALHEIM_SERVER_BUILD_ID: "25390671"
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
@@ -111,6 +112,18 @@ jobs:
           done
 
           test -d "$VALHEIM_DIR/valheim_server_Data/Managed"
+
+          APP_MANIFEST="$VALHEIM_DIR/steamapps/appmanifest_896660.acf"
+          if [[ ! -f "$APP_MANIFEST" ]]; then
+            APP_MANIFEST="$STEAMCMD_DIR/steamapps/appmanifest_896660.acf"
+          fi
+
+          test -f "$APP_MANIFEST"
+          ACTUAL_BUILD_ID="$(awk -F '"' '/"buildid"/ { print $4; exit }' "$APP_MANIFEST")"
+          if [[ "$ACTUAL_BUILD_ID" != "$VALHEIM_SERVER_BUILD_ID" ]]; then
+            echo "Expected Valheim Dedicated Server build $VALHEIM_SERVER_BUILD_ID, got $ACTUAL_BUILD_ID." >&2
+            exit 1
+          fi
 
       - name: Install pinned BepInEx build input
         run: |
