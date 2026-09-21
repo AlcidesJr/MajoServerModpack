@@ -316,6 +316,51 @@ namespace MajoServerModpack.Core.Networking
                     "Majo message rate limit exceeded.");
             }
 
+            if (session.HandshakeState == HandshakeState.Rejected)
+            {
+                AuditInvalid(
+                    peer,
+                    envelope.OperationId,
+                    RpcResultCode.Unauthorized,
+                    "Message received after handshake rejection.");
+
+                return Result(
+                    RpcResultCode.Unauthorized,
+                    localSide == GatewayExecutionSide.Server
+                        ? BuildErrorResponse(
+                            envelope,
+                            RpcResultCode.Unauthorized,
+                            "Majo session is not authorized.")
+                        : null,
+                    false,
+                    true,
+                    "Majo session is not authorized.");
+            }
+
+            if (session.HandshakeState == HandshakeState.Pending &&
+                !IsAllowedDuringPendingHandshake(
+                    envelope.MessageType,
+                    localSide))
+            {
+                AuditInvalid(
+                    peer,
+                    envelope.OperationId,
+                    RpcResultCode.Unauthorized,
+                    "Non-handshake message received before compatibility.");
+
+                return Result(
+                    RpcResultCode.Unauthorized,
+                    localSide == GatewayExecutionSide.Server
+                        ? BuildErrorResponse(
+                            envelope,
+                            RpcResultCode.Unauthorized,
+                            "Majo handshake is not complete.")
+                        : null,
+                    false,
+                    true,
+                    "Majo handshake is not complete.");
+            }
+
             switch (envelope.MessageType)
             {
                 case MajoMessageType.Hello:
@@ -336,7 +381,11 @@ namespace MajoServerModpack.Core.Networking
                         string.Empty);
 
                 case MajoMessageType.Error:
-                    return HandleRemoteError(session, envelope);
+                    return HandleRemoteError(
+                        peer,
+                        session,
+                        localSide,
+                        envelope);
 
                 default:
                     AuditInvalid(
@@ -851,20 +900,64 @@ namespace MajoServerModpack.Core.Networking
         }
 
         private GatewayDispatchResult HandleRemoteError(
+            TrustedPeerContext peer,
             MajoPeerSession session,
+            GatewayExecutionSide localSide,
             MajoMessageEnvelope envelope)
         {
+            if (session.HandshakeState == HandshakeState.Pending &&
+                (localSide != GatewayExecutionSide.Client ||
+                 envelope.OperationId != MajoProtocol.HandshakeOperationId ||
+                 envelope.RequestId <= 0))
+            {
+                session.RejectHandshake();
+                AuditInvalid(
+                    peer,
+                    envelope.OperationId,
+                    RpcResultCode.InvalidPayload,
+                    "Handshake error envelope is invalid.");
+
+                return Result(
+                    RpcResultCode.InvalidPayload,
+                    null,
+                    false,
+                    true,
+                    "Invalid Majo handshake error.");
+            }
+
             if (!MajoErrorCodec.TryDecode(
                 envelope.Payload,
                 out var code,
                 out var publicMessage))
             {
+                if (session.HandshakeState == HandshakeState.Pending)
+                {
+                    session.RejectHandshake();
+                }
+
+                AuditInvalid(
+                    peer,
+                    envelope.OperationId,
+                    RpcResultCode.InvalidPayload,
+                    "Remote error payload is invalid.");
+
                 return Result(
                     RpcResultCode.InvalidPayload,
                     null,
                     false,
-                    false,
+                    session.HandshakeState != HandshakeState.Compatible,
                     "Invalid remote error message.");
+            }
+
+            if (session.HandshakeState == HandshakeState.Pending)
+            {
+                session.RejectHandshake();
+                return Result(
+                    code,
+                    null,
+                    false,
+                    true,
+                    publicMessage);
             }
 
             if (code == RpcResultCode.UnsupportedProtocol)
@@ -988,6 +1081,19 @@ namespace MajoServerModpack.Core.Networking
                     result,
                     reason,
                     string.Empty));
+        }
+
+        private static bool IsAllowedDuringPendingHandshake(
+            MajoMessageType messageType,
+            GatewayExecutionSide localSide)
+        {
+            if (localSide == GatewayExecutionSide.Server)
+            {
+                return messageType == MajoMessageType.Hello;
+            }
+
+            return messageType == MajoMessageType.HelloAck ||
+                   messageType == MajoMessageType.Error;
         }
 
         private static bool DirectionMatchesLocalSide(
