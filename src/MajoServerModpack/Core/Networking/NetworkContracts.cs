@@ -441,6 +441,7 @@ namespace MajoServerModpack.Core.Networking
     public delegate RpcHandlerResult RpcOperationHandler(
         RpcRequestContext context,
         ArraySegment<byte> payload);
+    public delegate string RpcAuditTargetResolver(ArraySegment<byte> payload);
 
     public sealed class RateLimitPolicy
     {
@@ -452,6 +453,11 @@ namespace MajoServerModpack.Core.Networking
             }
 
             if (burst < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(burst));
+            }
+
+            if (requestsPerWindow > int.MaxValue - burst)
             {
                 throw new ArgumentOutOfRangeException(nameof(burst));
             }
@@ -484,7 +490,8 @@ namespace MajoServerModpack.Core.Networking
             AuditPolicy auditPolicy,
             int protocolVersion,
             RpcPayloadValidator validator,
-            RpcOperationHandler handler)
+            RpcOperationHandler handler,
+            RpcAuditTargetResolver auditTargetResolver = null)
         {
             if (operationId <= MajoProtocol.HandshakeOperationId)
             {
@@ -528,8 +535,16 @@ namespace MajoServerModpack.Core.Networking
                 throw new ArgumentOutOfRangeException(nameof(protocolVersion));
             }
 
+            if (auditPolicy != AuditPolicy.None &&
+                auditPolicy != AuditPolicy.Failures &&
+                auditPolicy != AuditPolicy.All)
+            {
+                throw new ArgumentOutOfRangeException(nameof(auditPolicy));
+            }
+
             Validator = validator ?? throw new ArgumentNullException(nameof(validator));
             Handler = handler ?? throw new ArgumentNullException(nameof(handler));
+            AuditTargetResolver = auditTargetResolver;
 
             OperationId = operationId;
             Direction = direction;
@@ -551,6 +566,7 @@ namespace MajoServerModpack.Core.Networking
         public int ProtocolVersion { get; }
         public RpcPayloadValidator Validator { get; }
         public RpcOperationHandler Handler { get; }
+        public RpcAuditTargetResolver AuditTargetResolver { get; }
 
         private static bool IsValidDirection(RpcDirection direction)
         {
