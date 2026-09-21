@@ -116,7 +116,7 @@ namespace MajoServerModpack.Platform.Network
 
             if (_installed)
             {
-                _harmony.UnpatchAll(HarmonyId);
+                _harmony.UnpatchSelf();
                 _installed = false;
             }
         }
