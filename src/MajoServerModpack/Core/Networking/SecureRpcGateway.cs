@@ -148,6 +148,25 @@ namespace MajoServerModpack.Core.Networking
                 throw new ArgumentNullException(nameof(peer));
             }
 
+            if (!_rateLimiter.TryConsume(
+                peer.ConnectionId,
+                GlobalPeerOperationId,
+                GlobalPeerPolicy))
+            {
+                AuditInvalid(
+                    peer,
+                    MajoProtocol.HandshakeOperationId,
+                    RpcResultCode.RateLimited,
+                    "Global peer message quota exceeded by invalid transport traffic.");
+
+                return Result(
+                    RpcResultCode.RateLimited,
+                    null,
+                    false,
+                    true,
+                    "Majo message rate limit exceeded.");
+            }
+
             AuditInvalid(
                 peer,
                 MajoProtocol.HandshakeOperationId,
@@ -255,6 +274,25 @@ namespace MajoServerModpack.Core.Networking
                     "Unknown connection.");
             }
 
+            if (!_rateLimiter.TryConsume(
+                peer.ConnectionId,
+                GlobalPeerOperationId,
+                GlobalPeerPolicy))
+            {
+                AuditInvalid(
+                    peer,
+                    MajoProtocol.HandshakeOperationId,
+                    RpcResultCode.RateLimited,
+                    "Global peer message quota exceeded.");
+
+                return Result(
+                    RpcResultCode.RateLimited,
+                    null,
+                    false,
+                    true,
+                    "Majo message rate limit exceeded.");
+            }
+
             if (!MajoMessageCodec.TryDecode(
                 data,
                 out var envelope,
@@ -292,28 +330,6 @@ namespace MajoServerModpack.Core.Networking
                     false,
                     true,
                     "Majo protocol is incompatible with this server.");
-            }
-
-            if (!_rateLimiter.TryConsume(
-                peer.ConnectionId,
-                GlobalPeerOperationId,
-                GlobalPeerPolicy))
-            {
-                AuditInvalid(
-                    peer,
-                    envelope.OperationId,
-                    RpcResultCode.RateLimited,
-                    "Global peer message quota exceeded.");
-
-                return Result(
-                    RpcResultCode.RateLimited,
-                    BuildErrorResponse(
-                        envelope,
-                        RpcResultCode.RateLimited,
-                        "Majo message rate limit exceeded."),
-                    false,
-                    false,
-                    "Majo message rate limit exceeded.");
             }
 
             if (session.HandshakeState == HandshakeState.Rejected)
