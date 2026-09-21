@@ -48,7 +48,8 @@ Jötunn 2.30.1 revalidado:
 1. runtime-build inicial falhou por `Harmony.UnpatchAll(string)` obsoleto; corrigido para `UnpatchSelf()`;
 2. quota global foi elevada para todo envelope válido decodificado, não apenas `Request`;
 3. `OperationDescriptor` passou a rejeitar direction/execution-side incoerentes;
-4. regressões adicionadas para flood de mensagens não-`Request` e metadata de direction inválida.
+4. regressões adicionadas para flood de mensagens não-`Request` e metadata de direction inválida;
+5. pre-review posterior identificou que `Response` e `Error` ainda podiam ser processados com sessão Pending. Correção em andamento: somente Hello/HelloAck e erro de rejeição server→client serão aceitos antes de compatibilidade.
 
 ## Verificação
 
