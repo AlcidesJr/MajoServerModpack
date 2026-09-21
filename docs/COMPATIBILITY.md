@@ -34,7 +34,7 @@ Durante a fundação, adotar postura conservadora:
 - features puramente server-only podem permanecer server-only;
 - features puramente locais não devem obrigar sincronização sem motivo.
 
-A MAJO-002 definirá o handshake concreto e os códigos de rejeição/degradação.
+A MAJO-002 implementa o handshake concreto. A política inicial é fail-closed para peers remotos: `ProtocolVersion == 1` e capability obrigatória `Core.Network.v1`. Ausência do hello, protocolo incompatível ou capability obrigatória ausente impede a sessão Majo de se tornar compatível.
 
 ## Compatibilidade de versão
 
@@ -62,7 +62,7 @@ Matriz em construção:
 
 | Majo | Valheim | BepInEx | Jötunn | Estado |
 | --- | --- | --- | --- | --- |
-| 0.0.1 | 1.0.15 | 5.4.23.5 (BepInExPack 5.4.2350) | 2.30.1 | candidata — build PASS; smoke runtime pendente |
+| 0.0.2 | 1.0.15 | 5.4.23.5 (BepInExPack 5.4.2350) | 2.30.1 | candidata MAJO-002 — CI/runtime build e smoke real devem ser registrados antes de suporte runtime |
 
 A promoção para suportada exige evidência correspondente; build isolado não equivale a smoke dentro do Valheim.
 
@@ -78,3 +78,16 @@ Quando capability/protocolo requerido estiver ausente:
 - desabilitar somente a feature quando a degradação segura estiver prevista e testada.
 
 Nunca continuar silenciosamente com estado de gameplay divergente.
+
+
+## Handshake Majo v1
+
+A versão pública e o wire contract são independentes:
+
+- `MajoVersion = 0.0.2`;
+- `ProtocolVersion = 1`;
+- `ConfigSchema = 0`;
+- `DataSchema = 0`;
+- capability obrigatória: `Core.Network.v1`.
+
+Jötunn recebe `NetworkCompatibility(EveryoneMustHaveMod, VersionStrictness.None)` para exigir presença do plugin nos dois lados quando aplicável. Isso é apenas uma proteção complementar: a autorização e a compatibilidade do protocolo Majo continuam no `SecureRpcGateway`, e não dependem da igualdade de `MajoVersion`.
