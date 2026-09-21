@@ -210,12 +210,16 @@ namespace MajoServerModpack.Platform.Network
             }
 
             var peer = CreateTrustedContext(binding);
+            var localSide =
+                ZNet.instance != null && ZNet.instance.IsServer()
+                    ? GatewayExecutionSide.Server
+                    : GatewayExecutionSide.Client;
 
             if (package == null ||
                 package.Size() <= 0 ||
                 package.Size() > MajoProtocol.MaxEnvelopeSize)
             {
-                _gateway.ReportTransportViolation(
+                var violation = _gateway.ReportTransportViolation(
                     peer,
                     RpcResultCode.InvalidPayload,
                     "Direct RPC package is null, empty, or oversized.");
@@ -228,6 +232,7 @@ namespace MajoServerModpack.Platform.Network
                         binding.ConnectionId + ".");
                 }
 
+                HandleDisconnect(sender, localSide, violation);
                 return;
             }
 
@@ -238,7 +243,7 @@ namespace MajoServerModpack.Platform.Network
             }
             catch (Exception exception)
             {
-                _gateway.ReportTransportViolation(
+                var violation = _gateway.ReportTransportViolation(
                     peer,
                     RpcResultCode.InvalidPayload,
                     "Direct RPC package could not be materialized.");
@@ -246,13 +251,9 @@ namespace MajoServerModpack.Platform.Network
                     "SecureRpc",
                     "Failed to read direct RPC package.",
                     exception);
+                HandleDisconnect(sender, localSide, violation);
                 return;
             }
-
-            var localSide =
-                ZNet.instance != null && ZNet.instance.IsServer()
-                    ? GatewayExecutionSide.Server
-                    : GatewayExecutionSide.Client;
 
             var result = _gateway.ProcessIncoming(peer, localSide, data);
 
@@ -271,24 +272,36 @@ namespace MajoServerModpack.Platform.Network
                     "Server rejected Majo networking: " + result.PublicMessage);
             }
 
-            if (result.DisconnectPeer)
+            HandleDisconnect(sender, localSide, result);
+        }
+
+        private void HandleDisconnect(
+            ZRpc sender,
+            GatewayExecutionSide localSide,
+            GatewayDispatchResult result)
+        {
+            if (sender == null || result == null || !result.DisconnectPeer)
             {
-                if (localSide == GatewayExecutionSide.Server)
-                {
-                    sender.Invoke(
-                        "Error",
-                        (int)ZNet.ConnectionStatus.ErrorVersion);
-                    return;
-                }
-
-                if (string.IsNullOrWhiteSpace(_lastConnectionError))
-                {
-                    _lastConnectionError = "Majo network compatibility check failed.";
-                }
-
-                ZNet.m_connectionStatus = ZNet.ConnectionStatus.ErrorVersion;
-                sender.Invoke("Disconnect");
+                return;
             }
+
+            if (localSide == GatewayExecutionSide.Server)
+            {
+                sender.Invoke(
+                    "Error",
+                    (int)ZNet.ConnectionStatus.ErrorVersion);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(_lastConnectionError))
+            {
+                _lastConnectionError = string.IsNullOrWhiteSpace(result.PublicMessage)
+                    ? "Majo network compatibility check failed."
+                    : result.PublicMessage;
+            }
+
+            ZNet.m_connectionStatus = ZNet.ConnectionStatus.ErrorVersion;
+            sender.Invoke("Disconnect");
         }
 
         private bool AllowPeerInfo(ZNet instance, ZRpc rpc)
