@@ -5,10 +5,10 @@ STATE: PLANNED
 ISSUE: #11
 PR: pending
 BRANCH: pending
-BLOCKED_BY: MAJO-003 not DONE
+BLOCKED_BY: none
 DEFERRED_GATE: none
 SECURITY: pending
 
 ## Estado
 
-Arquitetura incorporada ao roadmap. Implementação aguarda MAJO-003 para consumir o contrato real de configuração.
+Arquitetura incorporada ao roadmap. Implementação não deve iniciar antes de MAJO-003 = DONE, conforme DEPENDS_ON.
