@@ -22,6 +22,7 @@ internal static class NetworkingTests
         Run("RPC authorization levels", TestAuthorizationLevels);
         Run("RPC unknown peer", TestUnknownPeer);
         Run("RPC codec roundtrip", TestCodecRoundtrip);
+        Run("RPC null envelope", TestNullEnvelope);
         Run("RPC malformed envelope", TestMalformedEnvelope);
         Run("RPC malformed flood quota", TestMalformedFloodQuota);
         Run("RPC transport violation flood quota", TestTransportViolationFloodQuota);
@@ -44,6 +45,7 @@ internal static class NetworkingTests
         Run("RPC non-request packet quota", TestNonRequestPacketQuota);
         Run("RPC replayed request", TestReplay);
         Run("RPC handler failure isolation", TestHandlerFailureIsolation);
+        Run("RPC audit target", TestAuditTarget);
         Run("RPC unknown operation", TestUnknownOperation);
         Run("RPC invalid traffic audit quota", TestInvalidTrafficAuditQuota);
         Run("RPC client hello acknowledgement", TestClientHelloAcknowledgement);
@@ -249,6 +251,18 @@ internal static class NetworkingTests
         Assert(decoded.OperationId == 55, "operation roundtrip");
         Assert(decoded.RequestId == 123456789, "request id roundtrip");
         Assert(decoded.Payload.Count == 4, "payload roundtrip");
+    }
+
+    private static void TestNullEnvelope()
+    {
+        Assert(!MajoMessageCodec.TryDecode(
+                null,
+                out _,
+                out var code,
+                out _),
+            "null envelope must not decode");
+        Assert(code == RpcResultCode.InvalidPayload,
+            "null envelope must report invalid payload");
     }
 
     private static void TestMalformedEnvelope()
@@ -762,6 +776,42 @@ internal static class NetworkingTests
         Assert(!message.Contains("secret-stack-detail"), "client error must not leak exception detail");
     }
 
+    private static void TestAuditTarget()
+    {
+        var audit = new MemoryAuditSink();
+        var gateway = Gateway(audit: audit);
+        var peer = ReadyPeer(gateway, "audit-target", 1);
+
+        gateway.Register(
+            Operation(
+                58,
+                MajoPermissions.Player,
+                handler: (context, payload) => RpcHandlerResult.Success(),
+                auditPolicy: AuditPolicy.All,
+                auditTargetResolver: payload =>
+                    Encoding.UTF8.GetString(
+                        payload.Array,
+                        payload.Offset,
+                        payload.Count)));
+
+        var result = gateway.ProcessIncoming(
+            peer,
+            GatewayExecutionSide.Server,
+            gateway.CreateRequest(
+                58,
+                1,
+                Encoding.UTF8.GetBytes("target-42")));
+
+        Assert(result.Code == RpcResultCode.Success,
+            "audited operation must succeed");
+        Assert(audit.Last != null && audit.Last.Target == "target-42",
+            "audit target resolver must populate target");
+        Assert(audit.Last.ActorId == peer.ActorId,
+            "audit actor must come from trusted peer context");
+        Assert(audit.Last.ConnectionId == peer.ConnectionId,
+            "audit session must use trusted connection id");
+    }
+
     private static void TestUnknownOperation()
     {
         var gateway = Gateway();
@@ -886,7 +936,9 @@ internal static class NetworkingTests
         string permission,
         RateLimitPolicy policy = null,
         RpcPayloadValidator validator = null,
-        RpcOperationHandler handler = null)
+        RpcOperationHandler handler = null,
+        AuditPolicy auditPolicy = AuditPolicy.Failures,
+        RpcAuditTargetResolver auditTargetResolver = null)
     {
         return new OperationDescriptor(
             id,
@@ -895,10 +947,11 @@ internal static class NetworkingTests
             permission,
             1024,
             policy ?? new RateLimitPolicy(1000, 0, TimeSpan.FromSeconds(10)),
-            AuditPolicy.Failures,
+            auditPolicy,
             1,
             validator ?? (payload => PayloadValidationResult.Valid()),
-            handler ?? ((context, payload) => RpcHandlerResult.Success()));
+            handler ?? ((context, payload) => RpcHandlerResult.Success()),
+            auditTargetResolver);
     }
 
     private static TrustedPeerContext Peer(
@@ -970,10 +1023,12 @@ internal static class NetworkingTests
     private sealed class MemoryAuditSink : IAuditSink
     {
         public int Count { get; private set; }
+        public AuditEvent Last { get; private set; }
 
         public void Record(AuditEvent auditEvent)
         {
             Count++;
+            Last = auditEvent;
         }
     }
 
