@@ -178,7 +178,7 @@ namespace MajoServerModpack.Core.Networking
     {
         private readonly HashSet<string> _grantedPermissions;
 
-        public TrustedPeerContext(
+        internal TrustedPeerContext(
             string connectionId,
             long peerId,
             string actorId,
