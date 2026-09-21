@@ -28,6 +28,7 @@ internal static class Program
         Run("Patch consumers", TestPatchConsumers);
         Run("Runtime metadata", TestRuntimeMetadata);
         Run("Runtime rejects bootstrap after shutdown", TestBootstrapAfterShutdown);
+        _failed += NetworkingTests.RunAll();
 
         Console.WriteLine(_failed == 0
             ? "Majo core tests: PASS"
@@ -205,8 +206,8 @@ internal static class Program
     private static void TestRuntimeMetadata()
     {
         var metadata = CreateRuntimeMetadata();
-        Assert(metadata.MajoVersion == "0.0.1", "runtime must start at 0.0.1");
-        Assert(metadata.ProtocolVersion == 0, "protocol must remain unimplemented");
+        Assert(metadata.MajoVersion == "0.0.2", "runtime must be 0.0.2");
+        Assert(metadata.ProtocolVersion == 1, "protocol v1 must be active");
         Assert(metadata.ConfigSchema == 0, "config schema must remain unimplemented");
         Assert(metadata.DataSchema == 0, "data schema must remain unimplemented");
     }
