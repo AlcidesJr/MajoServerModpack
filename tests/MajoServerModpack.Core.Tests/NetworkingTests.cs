@@ -37,6 +37,7 @@ internal static class NetworkingTests
         Run("RPC spoofed actor ignored", TestSpoofedActor);
         Run("RPC spoofed admin ignored", TestSpoofedAdmin);
         Run("RPC semantic validation", TestSemanticValidation);
+        Run("RPC per-operation payload limit", TestPerOperationPayloadLimit);
         Run("RPC finite/range helpers", TestPayloadRules);
         Run("RPC rate limit burst and expiry", TestRateLimitBurstAndExpiry);
         Run("RPC independent peers", TestIndependentPeers);
@@ -618,6 +619,47 @@ internal static class NetworkingTests
 
         Assert(result.Code == RpcResultCode.InvalidPayload, "invalid enum/range must reject");
         Assert(!invoked, "invalid payload must not reach handler");
+    }
+
+    private static void TestPerOperationPayloadLimit()
+    {
+        var gateway = Gateway();
+        var peer = ReadyPeer(gateway, "op-size", 1);
+        var invoked = false;
+
+        gateway.Register(
+            new OperationDescriptor(
+                44,
+                RpcDirection.ClientToServer,
+                GatewayExecutionSide.Server,
+                MajoPermissions.Player,
+                4,
+                new RateLimitPolicy(10, 0, TimeSpan.FromSeconds(1)),
+                AuditPolicy.Failures,
+                1,
+                payload => PayloadValidationResult.Valid(),
+                (context, payload) =>
+                {
+                    invoked = true;
+                    return RpcHandlerResult.Success();
+                }));
+
+        var envelope = new MajoMessageEnvelope(
+            MajoMessageType.Request,
+            1,
+            44,
+            14,
+            new ArraySegment<byte>(new byte[] { 1, 2, 3, 4, 5 }));
+
+        var result = gateway.ProcessIncoming(
+            peer,
+            GatewayExecutionSide.Server,
+            MajoMessageCodec.Encode(envelope));
+
+        Assert(result.Code == RpcResultCode.InvalidPayload,
+            "payload above operation max must reject");
+        Assert(!result.HandlerInvoked && !invoked,
+            "oversized operation payload must not reach handler");
     }
 
     private static void TestPayloadRules()
