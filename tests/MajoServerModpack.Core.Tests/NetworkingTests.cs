@@ -25,6 +25,10 @@ internal static class NetworkingTests
         Run("RPC oversized envelope", TestOversizedEnvelope);
         Run("RPC invalid protocol", TestInvalidProtocol);
         Run("RPC missing capability", TestMissingCapability);
+        Run("RPC pre-handshake response rejected", TestPreHandshakeResponseRejected);
+        Run("RPC pre-handshake client error accepted", TestPreHandshakeClientErrorAccepted);
+        Run("RPC pre-handshake server error rejected", TestPreHandshakeServerErrorRejected);
+        Run("RPC invalid hello acknowledgement", TestInvalidHelloAcknowledgement);
         Run("RPC valid dispatch", TestValidDispatch);
         Run("RPC spoofed actor ignored", TestSpoofedActor);
         Run("RPC spoofed admin ignored", TestSpoofedAdmin);
@@ -278,6 +282,129 @@ internal static class NetworkingTests
 
         Assert(result.Code == RpcResultCode.UnsupportedProtocol, "missing capability must reject");
         Assert(result.DisconnectPeer, "missing capability must fail closed");
+    }
+
+    private static void TestPreHandshakeResponseRejected()
+    {
+        var gateway = Gateway();
+        var peer = Peer("pre-response", 1);
+        gateway.Connect(peer);
+
+        var envelope = new MajoMessageEnvelope(
+            MajoMessageType.Response,
+            1,
+            99,
+            1,
+            new ArraySegment<byte>(Array.Empty<byte>()));
+
+        var result = gateway.ProcessIncoming(
+            peer,
+            GatewayExecutionSide.Server,
+            MajoMessageCodec.Encode(envelope));
+
+        Assert(result.Code == RpcResultCode.Unauthorized,
+            "response before handshake must be rejected");
+        Assert(result.DisconnectPeer,
+            "pre-handshake response must fail closed");
+        Assert(!gateway.IsCompatible(peer.ConnectionId),
+            "pre-handshake response must not make session compatible");
+    }
+
+    private static void TestPreHandshakeClientErrorAccepted()
+    {
+        var gateway = Gateway();
+        var serverPeer = Peer(
+            "client-error",
+            2,
+            isServerPeer: true);
+        gateway.Connect(serverPeer);
+
+        var envelope = new MajoMessageEnvelope(
+            MajoMessageType.Error,
+            1,
+            MajoProtocol.HandshakeOperationId,
+            7,
+            new ArraySegment<byte>(
+                MajoErrorCodec.Encode(
+                    RpcResultCode.UnsupportedProtocol,
+                    "server rejected handshake")));
+
+        var result = gateway.ProcessIncoming(
+            serverPeer,
+            GatewayExecutionSide.Client,
+            MajoMessageCodec.Encode(envelope));
+
+        Assert(result.Code == RpcResultCode.UnsupportedProtocol,
+            "client must process server handshake rejection");
+        Assert(result.DisconnectPeer,
+            "server handshake rejection must disconnect client");
+        Assert(!gateway.IsCompatible(serverPeer.ConnectionId),
+            "rejected client session must remain incompatible");
+        Assert(gateway.Sessions.TryGet(serverPeer.ConnectionId, out var session) &&
+               session.HandshakeState == HandshakeState.Rejected,
+            "server rejection must mark client session rejected");
+    }
+
+    private static void TestPreHandshakeServerErrorRejected()
+    {
+        var gateway = Gateway();
+        var clientPeer = Peer("server-error", 3);
+        gateway.Connect(clientPeer);
+
+        var envelope = new MajoMessageEnvelope(
+            MajoMessageType.Error,
+            1,
+            MajoProtocol.HandshakeOperationId,
+            8,
+            new ArraySegment<byte>(
+                MajoErrorCodec.Encode(
+                    RpcResultCode.UnsupportedProtocol,
+                    "forged client error")));
+
+        var result = gateway.ProcessIncoming(
+            clientPeer,
+            GatewayExecutionSide.Server,
+            MajoMessageCodec.Encode(envelope));
+
+        Assert(result.Code == RpcResultCode.Unauthorized,
+            "client error before handshake must not be trusted by server");
+        Assert(result.DisconnectPeer,
+            "client pre-handshake error must fail closed");
+        Assert(!gateway.IsCompatible(clientPeer.ConnectionId),
+            "forged client error must not establish compatibility");
+    }
+
+    private static void TestInvalidHelloAcknowledgement()
+    {
+        var gateway = Gateway();
+        var serverPeer = Peer(
+            "invalid-ack",
+            4,
+            isServerPeer: true);
+        gateway.Connect(serverPeer);
+
+        var hello = new MajoHelloPayload(
+            GatewayExecutionSide.Server,
+            "0.0.2",
+            Array.Empty<string>());
+        var envelope = new MajoMessageEnvelope(
+            MajoMessageType.HelloAck,
+            1,
+            MajoProtocol.HandshakeOperationId,
+            9,
+            new ArraySegment<byte>(MajoHelloCodec.Encode(hello)));
+
+        var result = gateway.ProcessIncoming(
+            serverPeer,
+            GatewayExecutionSide.Client,
+            MajoMessageCodec.Encode(envelope));
+
+        Assert(result.Code == RpcResultCode.UnsupportedProtocol,
+            "invalid server hello acknowledgement must reject");
+        Assert(result.DisconnectPeer,
+            "invalid hello acknowledgement must fail closed on client");
+        Assert(!gateway.IsCompatible(serverPeer.ConnectionId),
+            "invalid acknowledgement must not establish compatibility");
     }
 
     private static void TestValidDispatch()
