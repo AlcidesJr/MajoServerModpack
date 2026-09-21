@@ -345,9 +345,7 @@ namespace MajoServerModpack.Platform.Network
                 return true;
             }
 
-            if (rpc == null ||
-                !_bindings.TryGetValue(rpc, out var binding) ||
-                !_gateway.IsCompatible(binding.ConnectionId))
+            if (rpc == null || !_bindings.TryGetValue(rpc, out var binding))
             {
                 if (rpc != null)
                 {
@@ -358,11 +356,28 @@ namespace MajoServerModpack.Platform.Network
 
                 _logger.Warning(
                     "SecureRpc",
-                    "Rejected peer before PeerInfo because Majo handshake is not compatible.");
+                    "Rejected unbound peer before PeerInfo.");
                 return false;
             }
 
-            return true;
+            if (_gateway.IsCompatible(binding.ConnectionId))
+            {
+                return true;
+            }
+
+            rpc.Invoke(
+                "Error",
+                (int)ZNet.ConnectionStatus.ErrorVersion);
+
+            if (_transportViolationLogged.Add(binding.ConnectionId))
+            {
+                _logger.Warning(
+                    "SecureRpc",
+                    "Rejected peer before PeerInfo because Majo handshake is not compatible.");
+            }
+
+            instance.Disconnect(binding.Peer);
+            return false;
         }
 
         private void AppendConnectionError(FejdStartup startup)
