@@ -10,7 +10,9 @@ Permitir evolução contínua sem transformar toda atualização do Majo em inco
 - `ProtocolVersion`: wire contract/RPC.
 - `ConfigSchema`: configuração persistida/sincronizada.
 - `DataSchema`: dados próprios persistidos.
-- capabilities: recursos negociáveis quando necessários.
+- capabilities: recursos negociáveis quando necessários;
+- launcher release/build metadata: identificação diagnóstica do executável;
+- manifest/schema compatibility: compatibilidade do launcher com o `ConfigSchema` consumido.
 
 ## Lado de execução
 
@@ -78,3 +80,14 @@ Quando capability/protocolo requerido estiver ausente:
 - desabilitar somente a feature quando a degradação segura estiver prevista e testada.
 
 Nunca continuar silenciosamente com estado de gameplay divergente.
+
+
+## Launcher
+
+O launcher não participa do handshake de peer do Valheim e não substitui o `ProtocolVersion`.
+
+- launcher e runtime podem compartilhar o mesmo `MajoVersion` de release;
+- compatibilidade de configuração é governada pelo schema/manifest;
+- servidor não confia em claims oriundos do launcher;
+- ausência do launcher não torna cliente incompatível se o runtime Majo correto estiver instalado;
+- eventual server preflight externo pelo launcher exigirá tarefa/protocolo próprio.
