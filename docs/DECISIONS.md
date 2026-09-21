@@ -57,3 +57,28 @@
 **Decisão:** qualquer serviço HTTP/WebSocket futuro, incluindo WebMap, nasce desabilitado e com exposição mínima por padrão. Binding público, autenticação e proxy externo são decisões explícitas do operador.
 
 **Motivo:** não transformar uma feature opcional em superfície de rede pública acidental.
+
+
+## ADR-013 — Launcher como aplicação separada
+
+**Decisão:** o Majo terá um launcher desktop próprio, separado do processo do Valheim e do `MajoServerModpack.dll`.
+
+**Motivo:** configuração, preflight, perfis e inicialização são responsabilidades de desktop; misturá-las ao runtime aumentaria acoplamento e risco.
+
+## ADR-014 — Launcher não é dependência de runtime
+
+**Decisão:** o plugin Majo deve continuar inicializando e operando quando o Valheim for iniciado manualmente sem launcher.
+
+## ADR-015 — Schema de configuração único
+
+**Decisão:** MAJO-003 deverá expor schema/manifest machine-readable versionado consumido pelo launcher e pela futura UI in-game.
+
+**Motivo:** defaults, ranges, authority, conflitos e requisitos de restart não podem ser duplicados.
+
+## ADR-016 — Launcher não concede autoridade
+
+**Decisão:** dados produzidos pelo launcher são configuração/metadata local, nunca prova de peer identity, admin ou permissão perante servidor remoto.
+
+## ADR-017 — Release train inicial compartilhado
+
+**Decisão:** inicialmente launcher e runtime pertencem ao mesmo release público `MajoVersion`; compatibilidade do launcher com configuração é validada separadamente pelo `ConfigSchema`/manifest.
