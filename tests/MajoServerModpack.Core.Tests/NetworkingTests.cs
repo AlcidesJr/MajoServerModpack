@@ -14,6 +14,7 @@ internal static class NetworkingTests
 
         Run("RPC operation registry", TestOperationRegistry);
         Run("RPC invalid direction metadata", TestInvalidDirection);
+        Run("RPC direction side mismatch", TestDirectionSideMismatch);
         Run("RPC session handshake", TestSessionHandshake);
         Run("RPC duplicate handshake", TestDuplicateHandshake);
         Run("RPC disconnect reconnect cleanup", TestDisconnectReconnect);
@@ -33,6 +34,7 @@ internal static class NetworkingTests
         Run("RPC independent peers", TestIndependentPeers);
         Run("RPC independent operations", TestIndependentOperations);
         Run("RPC global peer quota", TestGlobalPeerQuota);
+        Run("RPC non-request packet quota", TestNonRequestPacketQuota);
         Run("RPC replayed request", TestReplay);
         Run("RPC handler failure isolation", TestHandlerFailureIsolation);
         Run("RPC unknown operation", TestUnknownOperation);
@@ -75,6 +77,22 @@ internal static class NetworkingTests
             new OperationDescriptor(
                 10,
                 (RpcDirection)999,
+                GatewayExecutionSide.Server,
+                MajoPermissions.Player,
+                16,
+                new RateLimitPolicy(5, 0, TimeSpan.FromSeconds(1)),
+                AuditPolicy.Failures,
+                1,
+                payload => PayloadValidationResult.Valid(),
+                (context, payload) => RpcHandlerResult.Success()));
+    }
+
+    private static void TestDirectionSideMismatch()
+    {
+        AssertThrows<ArgumentException>(() =>
+            new OperationDescriptor(
+                11,
+                RpcDirection.ServerToClient,
                 GatewayExecutionSide.Server,
                 MajoPermissions.Player,
                 16,
@@ -456,6 +474,31 @@ internal static class NetworkingTests
 
         Assert(last == RpcResultCode.RateLimited,
             "rotating operation IDs must not bypass global peer quota");
+    }
+
+    private static void TestNonRequestPacketQuota()
+    {
+        var gateway = Gateway();
+        var peer = ReadyPeer(gateway, "packet-flood", 1);
+        RpcResultCode last = RpcResultCode.Success;
+
+        for (var index = 1; index <= 80; index++)
+        {
+            var envelope = new MajoMessageEnvelope(
+                MajoMessageType.Response,
+                1,
+                77,
+                index,
+                new ArraySegment<byte>(Array.Empty<byte>()));
+
+            last = gateway.ProcessIncoming(
+                peer,
+                GatewayExecutionSide.Server,
+                MajoMessageCodec.Encode(envelope)).Code;
+        }
+
+        Assert(last == RpcResultCode.RateLimited,
+            "valid non-request messages must not bypass the global peer quota");
     }
 
     private static void TestReplay()
