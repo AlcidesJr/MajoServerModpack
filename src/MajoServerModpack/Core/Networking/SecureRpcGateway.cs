@@ -138,6 +138,30 @@ namespace MajoServerModpack.Core.Networking
                    session.ProtocolVersion == ProtocolVersion;
         }
 
+        public GatewayDispatchResult ReportTransportViolation(
+            TrustedPeerContext peer,
+            RpcResultCode code,
+            string reason)
+        {
+            if (peer == null)
+            {
+                throw new ArgumentNullException(nameof(peer));
+            }
+
+            AuditInvalid(
+                peer,
+                MajoProtocol.HandshakeOperationId,
+                code,
+                reason);
+
+            return Result(
+                code,
+                null,
+                false,
+                false,
+                "Invalid Majo transport message.");
+        }
+
         public byte[] CreateHello(GatewayExecutionSide localSide, long requestId)
         {
             if (!MajoHelloPayload.IsValidExecutionSide(localSide))
@@ -216,8 +240,7 @@ namespace MajoServerModpack.Core.Networking
                 throw new ArgumentOutOfRangeException(nameof(localSide));
             }
 
-            if (!Sessions.TryGet(peer.ConnectionId, out var session) ||
-                session.PeerId != peer.PeerId)
+            if (!Sessions.TryGet(peer.ConnectionId, out var session))
             {
                 AuditInvalid(
                     peer,
