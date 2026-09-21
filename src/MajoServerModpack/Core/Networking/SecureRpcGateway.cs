@@ -815,6 +815,10 @@ namespace MajoServerModpack.Core.Networking
                     false);
             }
 
+            var auditTarget = ResolveAuditTarget(
+                operation,
+                envelope.Payload);
+
             RpcHandlerResult handlerResult;
             try
             {
@@ -834,7 +838,8 @@ namespace MajoServerModpack.Core.Networking
                     operation.OperationId,
                     RpcResultCode.HandlerFailed,
                     "Handler threw an exception.",
-                    operation.AuditPolicy);
+                    operation.AuditPolicy,
+                    auditTarget);
 
                 return Result(
                     RpcResultCode.HandlerFailed,
@@ -854,7 +859,8 @@ namespace MajoServerModpack.Core.Networking
                     operation.OperationId,
                     RpcResultCode.HandlerFailed,
                     "Handler returned no result.",
-                    operation.AuditPolicy);
+                    operation.AuditPolicy,
+                    auditTarget);
                 return Result(
                     RpcResultCode.HandlerFailed,
                     BuildErrorResponse(
@@ -879,7 +885,8 @@ namespace MajoServerModpack.Core.Networking
                         operation.OperationId,
                         RpcResultCode.HandlerFailed,
                         "Handler response exceeded protocol limit.",
-                        operation.AuditPolicy);
+                        operation.AuditPolicy,
+                        auditTarget);
                     return Result(
                         RpcResultCode.HandlerFailed,
                         BuildErrorResponse(
@@ -896,7 +903,8 @@ namespace MajoServerModpack.Core.Networking
                     operation.OperationId,
                     RpcResultCode.Success,
                     "Operation completed.",
-                    operation.AuditPolicy);
+                    operation.AuditPolicy,
+                    auditTarget);
 
                 var response = new MajoMessageEnvelope(
                     MajoMessageType.Response,
@@ -918,7 +926,8 @@ namespace MajoServerModpack.Core.Networking
                 operation.OperationId,
                 handlerResult.Code,
                 "Handler returned controlled failure.",
-                operation.AuditPolicy);
+                operation.AuditPolicy,
+                auditTarget);
 
             return Result(
                 handlerResult.Code,
@@ -1093,7 +1102,8 @@ namespace MajoServerModpack.Core.Networking
             int operationId,
             RpcResultCode result,
             string reason,
-            AuditPolicy policy)
+            AuditPolicy policy,
+            string target = null)
         {
             if (policy == AuditPolicy.None)
             {
@@ -1114,7 +1124,31 @@ namespace MajoServerModpack.Core.Networking
                     operationId,
                     result,
                     reason,
-                    string.Empty));
+                    target ?? string.Empty));
+        }
+
+        private string ResolveAuditTarget(
+            OperationDescriptor operation,
+            ArraySegment<byte> payload)
+        {
+            if (operation == null || operation.AuditTargetResolver == null)
+            {
+                return string.Empty;
+            }
+
+            try
+            {
+                return operation.AuditTargetResolver(payload) ?? string.Empty;
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(
+                    "SecureRpc",
+                    "Audit target resolver failed for operation " +
+                    operation.OperationId + ".",
+                    exception);
+                return string.Empty;
+            }
         }
 
         private static bool IsAllowedDuringPendingHandshake(
