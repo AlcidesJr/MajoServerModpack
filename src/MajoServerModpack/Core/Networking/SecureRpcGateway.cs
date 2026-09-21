@@ -138,6 +138,12 @@ namespace MajoServerModpack.Core.Networking
                    session.ProtocolVersion == ProtocolVersion;
         }
 
+        internal bool MarkPeerReady(string connectionId)
+        {
+            return Sessions.TryGet(connectionId, out var session) &&
+                   session.TryMarkPeerReady();
+        }
+
         public GatewayDispatchResult ReportTransportViolation(
             TrustedPeerContext peer,
             RpcResultCode code,
@@ -657,6 +663,18 @@ namespace MajoServerModpack.Core.Networking
                     envelope,
                     RpcResultCode.Unauthorized,
                     "Majo handshake is not complete.",
+                    null,
+                    false);
+            }
+
+            if (localSide == GatewayExecutionSide.Server &&
+                !session.PeerReady)
+            {
+                return RejectRequest(
+                    peer,
+                    envelope,
+                    RpcResultCode.Unauthorized,
+                    "Valheim peer authentication is not complete.",
                     null,
                     false);
             }
