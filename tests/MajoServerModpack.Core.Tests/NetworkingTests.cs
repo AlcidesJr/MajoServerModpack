@@ -22,6 +22,8 @@ internal static class NetworkingTests
         Run("RPC unknown peer", TestUnknownPeer);
         Run("RPC codec roundtrip", TestCodecRoundtrip);
         Run("RPC malformed envelope", TestMalformedEnvelope);
+        Run("RPC malformed flood quota", TestMalformedFloodQuota);
+        Run("RPC transport violation flood quota", TestTransportViolationFloodQuota);
         Run("RPC oversized envelope", TestOversizedEnvelope);
         Run("RPC invalid protocol", TestInvalidProtocol);
         Run("RPC missing capability", TestMissingCapability);
@@ -221,6 +223,48 @@ internal static class NetworkingTests
 
         Assert(result.Code == RpcResultCode.InvalidPayload, "truncated packet must be invalid");
         Assert(!result.HandlerInvoked, "malformed packet must not reach handler");
+    }
+
+    private static void TestMalformedFloodQuota()
+    {
+        var gateway = Gateway();
+        var peer = Peer("malformed-flood", 1);
+        gateway.Connect(peer);
+
+        GatewayDispatchResult last = null;
+        for (var index = 0; index < 81; index++)
+        {
+            last = gateway.ProcessIncoming(
+                peer,
+                GatewayExecutionSide.Server,
+                new byte[] { 1, 2, 3 });
+        }
+
+        Assert(last != null && last.Code == RpcResultCode.RateLimited,
+            "malformed traffic must consume the global peer quota");
+        Assert(last.DisconnectPeer,
+            "malformed flood must request disconnect when global quota is exceeded");
+    }
+
+    private static void TestTransportViolationFloodQuota()
+    {
+        var gateway = Gateway();
+        var peer = Peer("transport-flood", 2);
+        gateway.Connect(peer);
+
+        GatewayDispatchResult last = null;
+        for (var index = 0; index < 81; index++)
+        {
+            last = gateway.ReportTransportViolation(
+                peer,
+                RpcResultCode.InvalidPayload,
+                "oversized transport package");
+        }
+
+        Assert(last != null && last.Code == RpcResultCode.RateLimited,
+            "transport violations must consume the global peer quota");
+        Assert(last.DisconnectPeer,
+            "transport violation flood must request disconnect");
     }
 
     private static void TestOversizedEnvelope()
