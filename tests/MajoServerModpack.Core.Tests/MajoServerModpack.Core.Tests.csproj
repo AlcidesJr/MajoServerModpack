@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <Compile Include="Program.cs" />
+    <Compile Include="NetworkingTests.cs" />
     <Compile Include="../../src/MajoServerModpack/Core/**/*.cs"
              Link="Core/%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
