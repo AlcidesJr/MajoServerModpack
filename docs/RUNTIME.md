@@ -86,3 +86,22 @@ Registrar owner diferente para uma surface já possuída falha explicitamente. A
 - DataSchema: `0`.
 
 Zero nos schemas/protocolo significa que a MAJO-001 somente reserva a dimensão de versionamento; não implementa esses contratos.
+
+
+## Relação com o launcher
+
+O core runtime não depende do launcher.
+
+Caminho preferencial:
+
+```text
+MajoLauncher -> Steam/Valheim -> BepInEx -> Jötunn -> MajoServerModpack.dll
+```
+
+Caminho manual também suportado:
+
+```text
+Steam/Valheim -> BepInEx -> Jötunn -> MajoServerModpack.dll
+```
+
+Ambos produzem o mesmo runtime. Qualquer marker futuro de “iniciado pelo launcher” é apenas diagnóstico/UX e nunca concede permissões nem altera a trust boundary da MAJO-002.
