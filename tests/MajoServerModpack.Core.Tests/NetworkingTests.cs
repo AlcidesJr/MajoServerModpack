@@ -16,6 +16,7 @@ internal static class NetworkingTests
         Run("RPC invalid direction metadata", TestInvalidDirection);
         Run("RPC direction side mismatch", TestDirectionSideMismatch);
         Run("RPC session handshake", TestSessionHandshake);
+        Run("RPC request blocked before peer ready", TestRequestBlockedBeforePeerReady);
         Run("RPC duplicate handshake", TestDuplicateHandshake);
         Run("RPC disconnect reconnect cleanup", TestDisconnectReconnect);
         Run("RPC authorization levels", TestAuthorizationLevels);
@@ -122,6 +123,45 @@ internal static class NetworkingTests
         Assert(gateway.IsCompatible(peer.ConnectionId), "session must become compatible");
     }
 
+    private static void TestRequestBlockedBeforePeerReady()
+    {
+        var gateway = Gateway();
+        var peer = Peer("not-ready", 105);
+        gateway.Connect(peer);
+        Assert(HandshakeServer(gateway, peer, 1).Code == RpcResultCode.Success,
+            "handshake must succeed before peer ready test");
+
+        var invoked = false;
+        gateway.Register(
+            Operation(
+                19,
+                MajoPermissions.Player,
+                handler: (context, payload) =>
+                {
+                    invoked = true;
+                    return RpcHandlerResult.Success();
+                }));
+
+        var result = gateway.ProcessIncoming(
+            peer,
+            GatewayExecutionSide.Server,
+            gateway.CreateRequest(19, 2, Array.Empty<byte>()));
+
+        Assert(result.Code == RpcResultCode.Unauthorized,
+            "client request before vanilla peer readiness must reject");
+        Assert(!result.HandlerInvoked && !invoked,
+            "pre-ready request must not invoke handler");
+        Assert(gateway.MarkPeerReady(peer.ConnectionId),
+            "compatible peer must be markable as ready");
+
+        var accepted = gateway.ProcessIncoming(
+            peer,
+            GatewayExecutionSide.Server,
+            gateway.CreateRequest(19, 3, Array.Empty<byte>()));
+        Assert(accepted.Code == RpcResultCode.Success,
+            "request must pass after peer is explicitly ready");
+    }
+
     private static void TestDuplicateHandshake()
     {
         var gateway = Gateway();
@@ -156,6 +196,7 @@ internal static class NetworkingTests
         var reconnected = Peer("session-new", 103);
         gateway.Connect(reconnected);
         Assert(HandshakeServer(gateway, reconnected, 2).Code == RpcResultCode.Success, "reconnect must handshake");
+        Assert(gateway.MarkPeerReady(reconnected.ConnectionId), "reconnected peer ready");
         Assert(gateway.IsCompatible(reconnected.ConnectionId), "new connection must be independent");
     }
 
@@ -836,6 +877,7 @@ internal static class NetworkingTests
         gateway.Connect(peer);
         var result = HandshakeServer(gateway, peer, peerId + 1000);
         Assert(result.Code == RpcResultCode.Success, "test peer handshake failed");
+        Assert(gateway.MarkPeerReady(peer.ConnectionId), "test peer must become ready");
         return peer;
     }
 
