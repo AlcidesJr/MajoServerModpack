@@ -34,11 +34,35 @@ Jötunn 2.30.1 revalidado:
 
 ## Implementação
 
-pending
+- CONTENT_HEAD: `d2b1e700d5d6f7654b3f0be381ad545f723a423f`;
+- MajoVersion: `0.0.2`;
+- ProtocolVersion: `1`;
+- capability obrigatória: `Core.Network.v1`;
+- transport: RPC direto por `ZNetPeer.m_rpc`, bound ao `ZRpc` real;
+- Core: `SecureRpcGateway`, `OperationRegistry`, sessions, authorization, payload validation, replay protection, rate limiting, audit e failure isolation;
+- Platform: bind/unbind peer, handshake, gate de `RPC_PeerInfo`, admin resolution server-side e erro público de incompatibilidade;
+- gameplay/config UI/MAJO-003+: não implementados.
+
+### Hardening durante implementação
+
+1. runtime-build inicial falhou por `Harmony.UnpatchAll(string)` obsoleto; corrigido para `UnpatchSelf()`;
+2. quota global foi elevada para todo envelope válido decodificado, não apenas `Request`;
+3. `OperationDescriptor` passou a rejeitar direction/execution-side incoerentes;
+4. regressões adicionadas para flood de mensagens não-`Request` e metadata de direction inválida.
 
 ## Verificação
 
-pending
+| Gate | Evidência | Resultado |
+| --- | --- | --- |
+| Foundation/governance | run 35633905927 | PASS |
+| Core tests | job 106446545294 | PASS |
+| Runtime build | job 106446673340 | PASS |
+| Artifact validation | job 106446673340 | PASS |
+| CONTENT_HEAD | `d2b1e700d5d6f7654b3f0be381ad545f723a423f` | PASS |
+
+Primeiro run completo relevante `35633364610`: core-tests PASS e runtime-build FAIL por API Harmony obsoleta causada pelo diff. Foi tratado como regressão da MAJO-002, corrigido e não classificado como DEFERRED_GATE.
+
+Run decisivo do CONTENT_HEAD: `35633905927` — PASS.
 
 ## Review
 
