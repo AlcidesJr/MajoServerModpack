@@ -107,7 +107,7 @@ Cada módulo/feature deve declarar onde executa:
 - `ClientAndServer`;
 - `OptionalClient` quando houver degradação segura.
 
-Features que alteram gameplay compartilhado não podem assumir que um cliente ausente continuará semanticamente compatível. A política concreta de handshake pertence à MAJO-002 e será baseada em `ProtocolVersion`/capabilities, não apenas na string pública da versão.
+Features que alteram gameplay compartilhado não podem assumir que um cliente ausente continuará semanticamente compatível. A MAJO-002 materializa o handshake com `ProtocolVersion`/capabilities; a versão pública permanece metadata e não é a trust boundary.
 
 ## Input
 
@@ -128,22 +128,25 @@ Colisões devem gerar aviso e nunca ser sobrescritas silenciosamente.
 Transporte pode usar abstrações Jötunn. Autoridade permanece Majo.
 
 ```text
-Transport/RPC
+Valheim ZNetPeer / ZRpc
+    ↓
+Majo.Platform.Network
+    ↓
+TrustedPeerContext
     ↓
 SecureRpcGateway
+    ├── Session / Handshake
+    ├── OperationRegistry
+    ├── Authorization
+    ├── PayloadValidation
+    ├── RateLimiter / Replay
+    ├── Audit
+    └── Failure isolation
     ↓
-Peer identity
-    ↓
-Authorization
-    ↓
-Payload validation
-    ↓
-Rate limiting
-    ↓
-Audit
-    ↓
-Server execution
+Handler
 ```
+
+Na MAJO-002, o RPC privilegiado inbound é registrado diretamente no `ZRpc` de cada peer durante `ZNet.OnNewConnection`. Isso preserva o vínculo com a conexão real antes de interpretar bytes do cliente. `ZRoutedRpc` permanece reservado ao mesmo owner, mas não é interceptado nesta versão.
 
 ## Persistência
 
