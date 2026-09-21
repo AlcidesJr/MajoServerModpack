@@ -96,3 +96,14 @@ O artefato Linux x64 de BepInEx 5.4.23.5 usado pelo CI possui SHA-256 oficial:
 ## Referências funcionais
 
 Projetos em `docs/REFERENCE-PROJECTS.md` são referências de comportamento/arquitetura e não dependências do produto.
+
+
+## Dependências do launcher
+
+A política de dependências do runtime Valheim e do launcher são separadas.
+
+- BepInEx/Jötunn são dependências do runtime Valheim, não do processo do launcher.
+- O launcher poderá usar componentes desktop/.NET necessários à UI, mas novas dependências passam pela mesma análise de licença, supply chain e manutenção.
+- A tecnologia de UI desktop será decidida na MAJO-004.
+- O launcher não deve baixar/executar binários arbitrários.
+- Qualquer futuro instalador/updater exige origem confiável, manifest/hashes, staging e rollback em tarefa específica.
