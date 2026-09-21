@@ -294,6 +294,28 @@ namespace MajoServerModpack.Core.Networking
                     "Majo protocol is incompatible with this server.");
             }
 
+            if (!_rateLimiter.TryConsume(
+                peer.ConnectionId,
+                GlobalPeerOperationId,
+                GlobalPeerPolicy))
+            {
+                AuditInvalid(
+                    peer,
+                    envelope.OperationId,
+                    RpcResultCode.RateLimited,
+                    "Global peer message quota exceeded.");
+
+                return Result(
+                    RpcResultCode.RateLimited,
+                    BuildErrorResponse(
+                        envelope,
+                        RpcResultCode.RateLimited,
+                        "Majo message rate limit exceeded."),
+                    false,
+                    false,
+                    "Majo message rate limit exceeded.");
+            }
+
             switch (envelope.MessageType)
             {
                 case MajoMessageType.Hello:
@@ -638,10 +660,6 @@ namespace MajoServerModpack.Core.Networking
             }
 
             if (!_rateLimiter.TryConsume(
-                    peer.ConnectionId,
-                    GlobalPeerOperationId,
-                    GlobalPeerPolicy) ||
-                !_rateLimiter.TryConsume(
                     peer.ConnectionId,
                     operation.OperationId,
                     operation.RateLimitPolicy))
