@@ -20,9 +20,13 @@ Handshake, versão/protocolo, identidade real de peer, SecureRpcGateway, permiss
 
 Config registry tipado, `ClientPreference`, `ServerAuthority`, `ServerPolicy`, validação, dependências/conflitos e sync.
 
-### MAJO-004 — Majo Control Panel
+### MAJO-004 — Launcher
 
-UI gerada a partir de metadata de módulos/config, visão player/admin e indicadores de autoridade/risco/restart.
+Aplicação desktop externa ao Valheim para preflight, perfis, edição de configuração via schema/metadata e inicialização do jogo modded. Não é trust boundary nem requisito do runtime.
+
+### MAJO-005 — Majo Control Panel
+
+UI in-game gerada a partir da mesma metadata/schema de configuração, com visão player/admin e indicadores de autoridade/risco/restart.
 
 ## Ordem de domínios recomendada após a fundação
 

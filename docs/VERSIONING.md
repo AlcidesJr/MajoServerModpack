@@ -44,10 +44,27 @@ A versão pública do mod não substitui:
 - `ProtocolVersion` — compatibilidade de mensagens/RPC;
 - `ConfigSchema` — formato/semântica das configurações;
 - `DataSchema` — persistência/saves próprios;
-- `CapabilityVersion` — somente se negociação de capacidades for introduzida no futuro.
+- `CapabilityVersion` — somente se negociação de capacidades for introduzida no futuro;
+- `LauncherBuild`/metadata — identificação diagnóstica do launcher, sem criar uma segunda versão pública por padrão.
 
 Não aumentar protocolo/schema sem necessidade.
 
 ## Release 0.0.0
 
 `0.0.0` representa a fundação inicial do repositório/arquitetura, não uma declaração de estabilidade.
+
+
+## Launcher
+
+No modelo inicial, runtime e launcher pertencem ao mesmo `MajoVersion` público.
+
+Exemplo:
+
+```text
+MajoVersion: 0.4.0
+Runtime: 0.4.0
+Launcher: 0.4.0
+ConfigSchema: 3
+```
+
+O launcher deve recusar edição destrutiva quando não compreender o `ConfigSchema`, apresentando diagnóstico em vez de reescrever configurações desconhecidas.

@@ -4,7 +4,24 @@
 
 Construir um único produto Majo independente de mods funcionais de terceiros, com capacidade de crescer continuamente sem espalhar acoplamento a frameworks ou duplicar mecanismos internos.
 
-## Camadas
+## Produto
+
+O Majo possui duas superfícies executáveis independentes:
+
+```text
+MajoServerModpack
+├── MajoLauncher
+│   └── aplicação desktop externa ao Valheim
+│
+└── Valheim runtime
+    ├── BepInEx / Harmony
+    ├── Jötunn
+    └── MajoServerModpack.dll
+```
+
+O launcher é uma ferramenta de configuração, preflight e inicialização. O plugin continua capaz de iniciar e operar sem que o launcher esteja instalado ou permaneça aberto.
+
+## Camadas do runtime Valheim
 
 ```text
 Valheim
@@ -87,6 +104,37 @@ Contém mecanismos comuns. Módulos não devem recriar:
 - diagnostics;
 - compatibility handshake;
 - input/hotkey ownership e detecção de colisões.
+
+## Launcher
+
+O launcher não faz parte da trust boundary do servidor.
+
+Responsabilidades permitidas:
+
+- localizar/validar instalação do Valheim;
+- validar versões/hashes esperados de BepInEx, Jötunn e Majo;
+- consumir schema/metadata de configuração produzido pela plataforma de configuração;
+- editar preferências locais e configurações pré-launch permitidas;
+- selecionar perfis;
+- executar preflight;
+- iniciar o Valheim modded;
+- apresentar diagnostics/logs.
+
+Responsabilidades proibidas como fonte de autoridade:
+
+- declarar que um cliente é admin;
+- fornecer peer identity confiável ao servidor;
+- sobrescrever `ServerAuthority` de servidor remoto;
+- bypassar `SecureRpcGateway`;
+- tornar claims locais confiáveis apenas porque foram escritos pelo launcher.
+
+O runtime não depende de IPC permanente com o launcher. IPC futuro, se existir, será opcional, versionado e nunca usado como prova de identidade/autorização.
+
+## Contrato de configuração compartilhado
+
+A MAJO-003 deve produzir um contrato machine-readable versionado para launcher e futura UI in-game consumirem a mesma definição de configuração.
+
+O launcher não deve duplicar defaults, ranges, enums, authority, dependencies/conflicts, requisitos de restart/reconnect ou descrições.
 
 ## Autoridade
 
@@ -177,4 +225,11 @@ Regras de fundação:
 
 ## Distribuição
 
-Meta arquitetural: uma DLL funcional principal do Majo. BepInEx/Jötunn permanecem dependências de plataforma externas.
+O produto possui duas superfícies de distribuição:
+
+1. **runtime Valheim** — uma DLL funcional principal do Majo, com BepInEx/Jötunn como frameworks externos;
+2. **launcher desktop** — executável separado, fora de `BepInEx/plugins`.
+
+A existência do launcher não altera a regra de uma DLL funcional principal **dentro do Valheim**.
+
+O launcher pode ser removido após configuração sem tornar o runtime incapaz de iniciar manualmente.
