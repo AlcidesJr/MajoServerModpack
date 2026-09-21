@@ -6,15 +6,15 @@ Mod independente, modular e extensível para Valheim.
 
 As fundações de arquitetura/governança (`MAJO-000`) e o primeiro core runtime (`MAJO-001`) estão concluídos.
 
-Próxima frente planejada, ainda não iniciada:
+A frente atual é:
 
-- `MAJO-002 — Authority and secure networking`
+- `MAJO-002 — Authority and secure networking` — implementação/verificação em andamento nesta branch.
 
-Ainda não há funcionalidades de gameplay do modpack. O núcleo atual fornece bootstrap, lifecycle, registries, diagnostics, metadata e adapters mínimos de plataforma sobre BepInEx + Jötunn.
+Ainda não há funcionalidades de gameplay do modpack. A MAJO-002 adiciona somente infraestrutura de protocolo v1, handshake, identidade vinculada à conexão real, autorização, validação, rate limiting, replay protection, audit e failure isolation sobre BepInEx + Jötunn/Valheim.
 
 ## Plataforma
 
-Baseline validada para build pela MAJO-001 e ainda candidata a suporte runtime:
+Baseline promovida pela MAJO-001 e reutilizada pela MAJO-002; suporte runtime da nova camada de rede ainda depende dos gates desta tarefa:
 
 - **Valheim** `1.0.15`;
 - **BepInEx** `5.4.23.5` / BepInExPack_Valheim `5.4.2350`;
