@@ -36,18 +36,25 @@ BepInEx/Jötunn são dependências de plataforma, mas não fronteiras de confian
 
 ## RPC e protocolo
 
-A MAJO-002 deve definir:
+A MAJO-002 implementa a primeira trust boundary operacional:
 
-- envelope/versionamento;
-- tamanho máximo;
-- allowlist de operações;
-- autorização por operação;
-- erro seguro sem revelar dados sensíveis;
-- comportamento para replay/duplicação quando a operação não for naturalmente idempotente;
-- timeout/limites de fila;
-- logging rate-limited para payload inválido.
+- RPC direto registrado no `ZRpc` do `ZNetPeer` real da conexão;
+- `TrustedPeerContext` criado somente pelo adapter de plataforma;
+- envelope binário versionado com limite global de 64 KiB;
+- `OperationRegistry` como allowlist central;
+- autorização server-side por operação;
+- limite de payload global e por operação;
+- rate limiting por conexão/operação e quota global por peer;
+- replay/duplicação limitada por request id e sessão;
+- validação estrutural no codec e semântica por operação;
+- erros públicos previsíveis sem stack trace;
+- audit/log de tráfego inválido rate-limited e sem payload integral;
+- cleanup de sessão/quota/replay no disconnect;
+- isolamento de exceções de validator/handler.
 
-Operações destrutivas devem receber proteções adicionais adequadas ao domínio.
+Não há fila assíncrona própria nem request pendente na v1; timeout/limite de pending requests será exigido apenas quando esse mecanismo existir.
+
+Operações destrutivas futuras devem receber proteções adicionais adequadas ao domínio.
 
 ## Persistência
 
@@ -108,3 +115,20 @@ Quando compatibilidade, identidade ou autorização não puderem ser provadas:
 - desabilitar a feature afetada quando isso for seguro.
 
 Nunca degradar silenciosamente para “permitir”.
+
+
+## Identidade de transporte na MAJO-002
+
+O caminho privilegiado não usa actor/admin/sender declarado dentro do payload como fonte de verdade.
+
+```text
+ZNetPeer / ZRpc da conexão real
+        ↓
+Majo.Platform.Network
+        ↓
+TrustedPeerContext
+        ↓
+SecureRpcGateway
+```
+
+Admin remoto é resolvido no servidor a partir do peer/socket e de `ZNet.m_adminList`. `SynchronizationManager.PlayerIsAdmin` pode servir a UI futura, mas não participa da decisão de autorização.
