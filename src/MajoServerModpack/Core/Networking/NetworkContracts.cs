@@ -250,6 +250,7 @@ namespace MajoServerModpack.Core.Networking
         public long PeerId { get; }
         public HandshakeState HandshakeState { get; private set; }
         public int ProtocolVersion { get; private set; }
+        public bool PeerReady { get; private set; }
 
         public bool TryCompleteHandshake(int protocolVersion, IEnumerable<string> capabilities)
         {
@@ -280,6 +281,7 @@ namespace MajoServerModpack.Core.Networking
         {
             HandshakeState = HandshakeState.Rejected;
             ProtocolVersion = 0;
+            PeerReady = false;
             _capabilities.Clear();
             _recentRequestIds.Clear();
             _recentRequestOrder.Clear();
@@ -288,6 +290,17 @@ namespace MajoServerModpack.Core.Networking
         public bool HasCapability(string capability)
         {
             return !string.IsNullOrEmpty(capability) && _capabilities.Contains(capability);
+        }
+
+        internal bool TryMarkPeerReady()
+        {
+            if (HandshakeState != HandshakeState.Compatible)
+            {
+                return false;
+            }
+
+            PeerReady = true;
+            return true;
         }
 
         public bool TryAcceptRequest(long requestId)
