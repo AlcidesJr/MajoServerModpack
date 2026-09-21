@@ -7,7 +7,7 @@
 | MAJO-002 | Authority and secure networking | PLANNED | MAJO-001 | #10 | pending | none | none |
 | MAJO-003 | Configuration platform | PLANNED | MAJO-001, MAJO-002 | pending | pending | none | none |
 | MAJO-004 | Launcher | PLANNED | MAJO-003 | #11 | pending | none | none |
-| MAJO-005 | Majo Control Panel | PLANNED | MAJO-003, MAJO-004 | pending | pending | none | none |
+| MAJO-005 | Majo Control Panel | PLANNED | MAJO-003 | pending | pending | none | none |
 
 ## Regras
 
