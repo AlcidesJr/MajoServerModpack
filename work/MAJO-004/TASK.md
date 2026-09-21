@@ -15,7 +15,7 @@ PLANNED
 ## Dependências
 
 - DEPENDS_ON: MAJO-003
-- BLOCKED_BY: MAJO-003 not DONE
+- BLOCKED_BY: none
 - DEFERRED_GATE: none
 - Issue: #11
 
