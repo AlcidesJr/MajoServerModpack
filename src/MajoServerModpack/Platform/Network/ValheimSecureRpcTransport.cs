@@ -290,6 +290,13 @@ namespace MajoServerModpack.Platform.Network
                 sender.Invoke(
                     "Error",
                     (int)ZNet.ConnectionStatus.ErrorVersion);
+
+                if (_bindings.TryGetValue(sender, out var binding) &&
+                    ZNet.instance != null)
+                {
+                    ZNet.instance.Disconnect(binding.Peer);
+                }
+
                 return;
             }
 
@@ -302,6 +309,33 @@ namespace MajoServerModpack.Platform.Network
 
             ZNet.m_connectionStatus = ZNet.ConnectionStatus.ErrorVersion;
             sender.Invoke("Disconnect");
+
+            if (_bindings.TryGetValue(sender, out var binding) &&
+                ZNet.instance != null)
+            {
+                ZNet.instance.Disconnect(binding.Peer);
+            }
+        }
+
+        private void MarkPeerReady(ZNet instance, ZRpc rpc)
+        {
+            if (instance == null ||
+                !instance.IsServer() ||
+                rpc == null ||
+                !_bindings.TryGetValue(rpc, out var binding) ||
+                binding.Peer == null ||
+                !binding.Peer.IsReady())
+            {
+                return;
+            }
+
+            if (_gateway.MarkPeerReady(binding.ConnectionId))
+            {
+                _logger.Debug(
+                    "SecureRpc",
+                    "Peer authenticated and ready: connection=" +
+                    binding.ConnectionId + ".");
+            }
         }
 
         private bool AllowPeerInfo(ZNet instance, ZRpc rpc)
@@ -409,6 +443,16 @@ namespace MajoServerModpack.Platform.Network
             {
                 return _current == null ||
                        _current.AllowPeerInfo(__instance, rpc);
+            }
+
+            [HarmonyPatch(typeof(ZNet), nameof(ZNet.RPC_PeerInfo))]
+            [HarmonyPostfix]
+            [HarmonyPriority(Priority.Last)]
+            private static void ZNet_RPC_PeerInfo_Postfix(
+                ZNet __instance,
+                ZRpc rpc)
+            {
+                _current?.MarkPeerReady(__instance, rpc);
             }
 
             [HarmonyPatch(
