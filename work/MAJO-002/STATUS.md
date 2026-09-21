@@ -1,7 +1,7 @@
 # STATUS — MAJO-002
 
 TASK: MAJO-002
-STATE: READY
+STATE: IMPLEMENTING
 BRANCH: task/MAJO-002-authority-secure-networking
 BASE_HEAD: b9eb209a633721f3acdb028aed7377f2f7c34d58
 CONTENT_HEAD: pending
@@ -23,7 +23,7 @@ SECURITY: pending
 
 ## Próximo gate
 
-Implementar somente a infraestrutura MAJO-002 e transicionar para VERIFYING com testes/CI.
+Concluir a implementação atômica da infraestrutura MAJO-002 e transicionar para VERIFYING.
 
 ## Última atualização
 
