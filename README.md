@@ -6,9 +6,11 @@ Mod independente, modular e extensível para Valheim.
 
 As fundações de arquitetura/governança (`MAJO-000`) e o primeiro core runtime (`MAJO-001`) estão concluídos.
 
-Próxima frente planejada, ainda não iniciada:
+Próxima frente planejada:
 
 - `MAJO-002 — Authority and secure networking`
+
+O produto também terá um launcher desktop próprio, planejado como `MAJO-004 — Launcher`, responsável por configurar opções via schema compartilhado, validar o ambiente modded e iniciar o Valheim modded. O launcher é uma aplicação separada e **não é dependência de runtime** do plugin.
 
 Ainda não há funcionalidades de gameplay do modpack. O núcleo atual fornece bootstrap, lifecycle, registries, diagnostics, metadata e adapters mínimos de plataforma sobre BepInEx + Jötunn.
 
@@ -48,4 +50,5 @@ Consulte:
 - `docs/VERSIONING.md`
 - `docs/CONFLICTS.md`
 - `docs/SECURITY-BASELINE.md`
+- `docs/LAUNCHER.md`
 - `work/BOARD.md`
