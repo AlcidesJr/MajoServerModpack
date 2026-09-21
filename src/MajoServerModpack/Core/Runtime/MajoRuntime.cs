@@ -4,6 +4,7 @@ using MajoServerModpack.Core.Diagnostics;
 using MajoServerModpack.Core.Input;
 using MajoServerModpack.Core.Logging;
 using MajoServerModpack.Core.Modules;
+using MajoServerModpack.Core.Networking;
 using MajoServerModpack.Core.Patching;
 
 namespace MajoServerModpack.Core.Runtime
@@ -28,12 +29,20 @@ namespace MajoServerModpack.Core.Runtime
             Modules = new ModuleRegistry(logger);
             Inputs = new InputRegistry();
             Patches = new PatchCoordinator();
+            SecureRpc = new SecureRpcGateway(
+                logger,
+                MajoVersions.MajoVersion,
+                MajoVersions.ProtocolVersion,
+                new[] { MajoProtocol.CoreNetworkCapability },
+                new SystemRateLimitClock(),
+                new LoggerAuditSink(logger));
         }
 
         public RuntimeMetadata Metadata { get; }
         public ModuleRegistry Modules { get; }
         public InputRegistry Inputs { get; }
         public PatchCoordinator Patches { get; }
+        public SecureRpcGateway SecureRpc { get; }
 
         public DiagnosticsSnapshot Bootstrap()
         {
@@ -85,6 +94,8 @@ namespace MajoServerModpack.Core.Runtime
             }
 
             _shutdown = true;
+            SecureRpc.Reset();
+
             if (!_bootstrapped)
             {
                 return;
