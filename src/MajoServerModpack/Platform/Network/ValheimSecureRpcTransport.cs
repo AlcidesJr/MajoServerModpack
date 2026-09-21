@@ -271,12 +271,23 @@ namespace MajoServerModpack.Platform.Network
                     "Server rejected Majo networking: " + result.PublicMessage);
             }
 
-            if (result.DisconnectPeer &&
-                localSide == GatewayExecutionSide.Server)
+            if (result.DisconnectPeer)
             {
-                sender.Invoke(
-                    "Error",
-                    (int)ZNet.ConnectionStatus.ErrorVersion);
+                if (localSide == GatewayExecutionSide.Server)
+                {
+                    sender.Invoke(
+                        "Error",
+                        (int)ZNet.ConnectionStatus.ErrorVersion);
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(_lastConnectionError))
+                {
+                    _lastConnectionError = "Majo network compatibility check failed.";
+                }
+
+                ZNet.m_connectionStatus = ZNet.ConnectionStatus.ErrorVersion;
+                sender.Invoke("Disconnect");
             }
         }
 
