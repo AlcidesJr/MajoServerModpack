@@ -488,6 +488,13 @@ namespace MajoServerModpack.Core.Networking
                 throw new ArgumentOutOfRangeException(nameof(allowedExecutionSide));
             }
 
+            if (!DirectionMatchesExecutionSide(direction, allowedExecutionSide))
+            {
+                throw new ArgumentException(
+                    "RPC direction does not match the allowed execution side.",
+                    nameof(allowedExecutionSide));
+            }
+
             if (string.IsNullOrWhiteSpace(requiredPermission))
             {
                 throw new ArgumentException("Required permission is required.", nameof(requiredPermission));
@@ -537,6 +544,18 @@ namespace MajoServerModpack.Core.Networking
             return direction == RpcDirection.ClientToServer ||
                    direction == RpcDirection.ServerToClient ||
                    direction == RpcDirection.ServerBroadcast;
+        }
+
+        private static bool DirectionMatchesExecutionSide(
+            RpcDirection direction,
+            GatewayExecutionSide side)
+        {
+            if (direction == RpcDirection.ClientToServer)
+            {
+                return side == GatewayExecutionSide.Server;
+            }
+
+            return side == GatewayExecutionSide.Client;
         }
     }
 
